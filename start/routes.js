@@ -48,9 +48,9 @@ Route.group(() => {
   Route.delete('locales/:id', 'LocaleController.destroy').middleware('can:delete_locales')
 
   // schedules
-  Route.get('schedules.index', 'ScheduleController').middleware('can:read_schedules')
-  Route.get('schedules.show/:id', 'ScheduleController').middleware('can:read_schedules')
-  Route.post('schedules.store', 'ScheduleController').validator('Schedule/store').middleware('can:create_schedules')
+  Route.get('schedules', 'ScheduleController.index').middleware('can:read_schedules')
+  Route.get('schedules/:id', 'ScheduleController.show').middleware('can:read_schedules')
+  Route.post('schedules', 'ScheduleController.store').validator('Schedule/store').middleware('can:create_schedules')
 
   // checkouts
   Route.get('checkouts', 'CheckoutController.index').middleware('can:read_schedules')

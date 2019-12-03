@@ -30,3 +30,7 @@ Factory.blueprint('App/Models/User', async (faker, index, data) => ({
   email: data.email,
   password: data.password
 }))
+
+Factory.blueprint('App/Models/Locale', async (faker, index, data) => ({
+  description: data[index].description
+}))
