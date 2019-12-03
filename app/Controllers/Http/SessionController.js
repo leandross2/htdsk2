@@ -12,7 +12,15 @@ class SessionController {
     const user = await User.query().where('email', email).first()
     const roles = await user.getRoles()
     const permissions = await user.getPermissions()
-    return { user, roles }
+    return {
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        department_id: user.department_id,
+        roles
+      }
+    }
   }
 }
 
