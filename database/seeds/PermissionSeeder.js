@@ -14,7 +14,7 @@
 const Factory = use('Factory')
 
 class PermissionSeeder {
-  async run() {
+  async run () {
     await Factory.model('Adonis/Acl/Permission').createMany(20, [
       {
         slug: 'create_users',
