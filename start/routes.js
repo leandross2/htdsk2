@@ -22,6 +22,7 @@ Route.post('session', 'SessionController.store')
 Route.group(() => {
   // users
   Route.get('users', 'UserController.index').middleware('can:read_users')
+  Route.get('users/:id', 'UserController.show').middleware('can:read_users')
   Route.post('users', 'UserController.store').validator('User/store').middleware('can:create_users')
   Route.put('users/:id', 'UserController.update').validator('User/update').middleware('can:update_users')
 
