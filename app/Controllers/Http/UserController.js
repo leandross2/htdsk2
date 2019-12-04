@@ -75,13 +75,20 @@ class UserController {
   }
 
   async show ({ params, auth }) {
+    const userLogged = auth.user
+    const isAdmin = userLogged.getRoles('administrator')
+
+    if (!isAdmin || userLogged.id != params.id) {
+      return { error: { message: 'Você não tem permissao para ver este usuario' } }
+    }
+
     const user = await User.findOrFail(params.id)
 
     const loggedUser = await auth.getUser()
 
     if (params.id === loggedUser.id || loggedUser.is('administrator')) {
-      user.type = await loggedUser.getRoles()
-      user.permissions = await loggedUser.getRoles()
+      user.type = await user.getRoles()
+      user.permissions = await user.getPermissions()
     }
     return user
   }

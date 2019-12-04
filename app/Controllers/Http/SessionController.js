@@ -16,6 +16,7 @@ class SessionController {
 
     const user = await User.query().where('email', email).first()
     const roles = await user.getRoles()
+
     if (roles.includes('administrator')) {
       user.permissions = await user.getPermissions()
     }

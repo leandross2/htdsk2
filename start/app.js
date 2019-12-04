@@ -20,7 +20,8 @@ const providers = [
   '@adonisjs/framework/providers/ViewProvider',
   '@adonisjs/validator/providers/ValidatorProvider',
   'adonis-swagger/providers/SwaggerProvider',
-  'adonis-acl/providers/AclProvider'
+  'adonis-acl/providers/AclProvider',
+  'adonis-scheduler/providers/SchedulerProvider'
 ]
 
 /*
@@ -34,7 +35,8 @@ const providers = [
 */
 const aceProviders = [
   '@adonisjs/lucid/providers/MigrationsProvider',
-  'adonis-acl/providers/CommandsProvider'
+  'adonis-acl/providers/CommandsProvider',
+  'adonis-scheduler/providers/CommandsProvider'
 ]
 
 /*
@@ -51,7 +53,8 @@ const aceProviders = [
 */
 const aliases = {
   Role: 'Adonis/Acl/Role',
-  Permission: 'Adonis/Acl/Permission'
+  Permission: 'Adonis/Acl/Permission',
+  Scheduler: 'Adonis/Addons/Scheduler'
 }
 
 /*

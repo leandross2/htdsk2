@@ -18,7 +18,8 @@ hooks.after.providersBooted(() => {
       .where(column, value)
       .first()
     if (!row) {
-      throw message
+      const msg = 'registro nao encontrado'
+      throw msg
     }
   }
   const oldPassword = async (data, field, message, args, get) => {
@@ -33,14 +34,16 @@ hooks.after.providersBooted(() => {
 
     const verifyPassword = await Hash.verify(value, user.password)
     if (!verifyPassword) {
-      throw message
+      const msg = 'senha antiga invalida'
+      throw msg
     }
   }
   const minLength = async (data, field, message, args, get) => {
     const value = get(data, field)
     const [length] = args
     if (!value.trim().length || value.trim().length < length) {
-      throw message
+      const msg = `tamanho minimo de ${length}`
+      throw msg
     }
   }
   const pastDate = async (data, field, message, args, get) => {
@@ -55,7 +58,8 @@ hooks.after.providersBooted(() => {
     const validDate = isBefore(dateParsed, now)
 
     if (validDate) {
-      throw message
+      const msg = 'Esta data já passou'
+      throw msg
     }
   }
 
@@ -76,7 +80,8 @@ hooks.after.providersBooted(() => {
       .first()
 
     if (row) {
-      throw message
+      const msg = 'Mesa ocupada'
+      throw msg
     }
   }
 
@@ -92,14 +97,15 @@ hooks.after.providersBooted(() => {
     const validDate = isBefore(new Date(), availableHour)
 
     if (validDate) {
-      throw message
+      const msg = 'o checkin é liberado as 15:00'
+      throw msg
     }
   }
 
   const isChecked = async (data, field, message, args, get) => {
     const value = get(data, field)
-    const userId = data.userId
-    console.log(userId)
+    const { userId } = data
+
     if (!value) {
       return
     }
@@ -108,7 +114,8 @@ hooks.after.providersBooted(() => {
       .whereNull('date_checkout')
       .first()
     if (row) {
-      throw message
+      const msg = 'faça checkout antes de fazer checkin'
+      throw msg
     }
   }
 
