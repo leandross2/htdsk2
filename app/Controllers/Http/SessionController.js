@@ -25,7 +25,6 @@ class SessionController {
         id: user.id,
         name: user.name,
         email: user.email,
-        department_id: user.department_id,
         token: token.token,
         type: roles
       }

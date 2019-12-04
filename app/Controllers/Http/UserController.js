@@ -4,7 +4,7 @@ const User = use('App/Models/User')
 const Department = use('App/Models/Department')
 
 class UserController {
-  async store({ request }) {
+  async store ({ request }) {
     const { permissions, roles, ...data } = request.only([
       'name',
       'email',
@@ -31,12 +31,12 @@ class UserController {
     return user
   }
 
-  async index() {
+  async index () {
     const users = User.all()
     return users
   }
 
-  async update({ params, request, auth }) {
+  async update ({ params, request, auth }) {
     const { id } = params
     const {
       permissions,
@@ -74,7 +74,7 @@ class UserController {
     return user
   }
 
-  async show({ params, auth }) {
+  async show ({ params, auth }) {
     const user = await User.findOrFail(params.id)
 
     const loggedUser = await auth.getUser()
@@ -86,7 +86,7 @@ class UserController {
     return user
   }
 
-  async destroy({ params }) {
+  async destroy ({ params }) {
     const user = await User.findOrFail(params.id)
     await user.delete()
   }
