@@ -41,6 +41,7 @@ Route.group(() => {
   Route.get('desks', 'DeskController.index').middleware('can:read_desks')
   Route.get('desks/:id', 'DeskController.show').middleware('can:read_desks')
   Route.post('desks', 'DeskController.store').validator('Desk/store').middleware('can:create_desks')
+  Route.delete('desks/:id', 'DeskController.destroy').middleware('can:delete_desks')
 
   // locales
   Route.get('locales', 'LocaleController.index').middleware('can:read_locales')
