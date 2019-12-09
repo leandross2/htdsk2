@@ -26,7 +26,6 @@ class SessionController {
 
     if (roles.includes('administrator')) {
       user.permissions = await user.getPermissions()
-      const admin = true
     }
 
     return {
