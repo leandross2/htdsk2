@@ -17,14 +17,16 @@ class SessionController {
     // const parsedDate = parseISO()
     // const znDate = zonedTimeToUtc(new Date(), 'America/Sao_Paulo')
     // console.log(znDate)
-    console.log(startOfDay(new Date()))
     const token = await auth.attempt(email, password, null, expiresIn)
 
-    const user = await User.query().where('email', email).first()
+    const user = await User.query()
+      .where('email', email)
+      .first()
     const roles = await user.getRoles()
 
     if (roles.includes('administrator')) {
       user.permissions = await user.getPermissions()
+      const admin = true
     }
 
     return {
@@ -33,7 +35,8 @@ class SessionController {
         name: user.name,
         email: user.email,
         token: token.token,
-        type: roles
+        type: roles,
+        admin: roles.includes('administrator')
       }
     }
   }

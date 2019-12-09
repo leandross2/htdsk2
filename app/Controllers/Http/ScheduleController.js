@@ -4,8 +4,8 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
-const { startOfDay, endOfDay, parseISO, subHours } = require('date-fns')
-const { utcToZonedTime } = require('date-fns-tz')
+const { startOfDay, endOfDay, parseISO } = require('date-fns')
+// const { utcToZonedTime } = require('date-fns-tz')
 
 const Schedule = use('App/Models/Schedule')
 /**
@@ -21,15 +21,14 @@ class ScheduleController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index({ request, response }) {
+  async index ({ request, response }) {
     const { date } = request.get()
     if (!date || parseISO(date) == 'Invalid Date') {
       return response.status(401).send({ error: { message: 'data invalida' } })
     }
     const parsedDate = parseISO(date)
 
-    const schedules = await Schedule
-      .query()
+    const schedules = await Schedule.query()
       .whereBetween('date_schedule', [
         startOfDay(parsedDate),
         endOfDay(parsedDate)
@@ -47,15 +46,11 @@ class ScheduleController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store({ request }) {
-    const {
-      dateSchedule,
-      userId: user_id,
-      deskId: desk_id
-    } = request.all()
+  async store ({ request }) {
+    const { dateSchedule, userId: user_id, deskId: desk_id } = request.all()
 
     const startDaySchedule = startOfDay(parseISO(dateSchedule))
-    console.log(utcToZonedTime(startDaySchedule, 'America/Bahia'))
+    // console.log(utcToZonedTime(startDaySchedule, 'America/Bahia'))
     const schedule = await Schedule.create({
       date_schedule: startDaySchedule,
       user_id,
@@ -74,11 +69,10 @@ class ScheduleController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show({ params, request, response, view }) {
+  async show ({ params, request, response, view }) {
     const { id } = params
 
-    const schedules = await Schedule
-      .query()
+    const schedules = await Schedule.query()
       .where('id', id)
       .with('user')
       .with('desk')
@@ -95,7 +89,7 @@ class ScheduleController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update({ params, request }) {
+  async update ({ params, request }) {
     const {
       dateSchedule: date_schedule,
       dateCheckout: date_checkout,
@@ -120,7 +114,7 @@ class ScheduleController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy({ response, auth }) {
+  async destroy ({ response, auth }) {
     const { user } = auth
 
     const schedule = await Schedule.findByOrFail('user_id', user.id)

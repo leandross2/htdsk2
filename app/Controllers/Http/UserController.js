@@ -79,7 +79,9 @@ class UserController {
     const isAdmin = userLogged.getRoles('administrator')
 
     if (!isAdmin || userLogged.id != params.id) {
-      return { error: { message: 'Você não tem permissao para ver este usuario' } }
+      return {
+        error: { message: 'Você não tem permissao para ver este usuario' }
+      }
     }
 
     const user = await User.findOrFail(params.id)

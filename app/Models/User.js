@@ -35,6 +35,18 @@ class User extends Model {
     return this.hasMany('App/Models/Token')
   }
 
+  static get computed () {
+    return ['admin']
+  }
+
+  getAdmin (user) {
+    // return type === 'adminsitrator'
+  }
+
+  roles () {
+    return this.hasMany('Adonis/Acl/HasRole')
+  }
+
   static get traits () {
     return [
       '@provider:Adonis/Acl/HasRole',
