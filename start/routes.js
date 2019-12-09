@@ -24,8 +24,9 @@ Route.post('forgotpassword', 'ForgotPasswordController.store').validator(
   'ForgotPassword/store'
 )
 Route.put('forgotpassword', 'ForgotPasswordController.update').validator(
-  'ForgotPassword/ForgotPasswordUpdate'
+  'ForgotPassword/update'
 )
+
 // Route.get('docs', 'DocumentationController.index')
 Route.group(() => {
   // users

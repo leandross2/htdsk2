@@ -8,8 +8,8 @@ class ForgotPasswordUpdate {
   get rules () {
     return {
       // validation rules
-      token: 'required|minLength:20',
-      password: 'required|email'
+      token: 'required',
+      password: 'required|confirmed'
     }
   }
 }
