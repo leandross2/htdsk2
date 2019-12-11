@@ -1,5 +1,7 @@
 'use strict'
+
 const { startOfDay, endOfDay, parseISO } = require('date-fns')
+
 const Schedule = use('App/Models/Schedule')
 
 class CheckoutController {
@@ -8,9 +10,11 @@ class CheckoutController {
 
     const parsedDate = parseISO(date)
 
-    const schedules = await Schedule
-      .query()
-      .whereBetween('date_schedule', [startOfDay(parsedDate), endOfDay(parsedDate)])
+    const schedules = await Schedule.query()
+      .whereBetween('date_schedule', [
+        startOfDay(parsedDate),
+        endOfDay(parsedDate)
+      ])
       .whereNotNull('date_checkout')
       .fetch()
 

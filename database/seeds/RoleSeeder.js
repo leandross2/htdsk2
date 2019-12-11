@@ -16,7 +16,7 @@ const Database = use('Database')
 
 class RoleSeeder {
   async run () {
-    await Factory.model('Adonis/Acl/Role').createMany(2, [
+    await Factory.model('Adonis/Acl/Role').createMany(1, [
       {
         slug: 'administrator',
         name: 'Administrator',

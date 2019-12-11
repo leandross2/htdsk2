@@ -1,10 +1,7 @@
 'use strict'
 
-const { startOfDay, parseISO } = require('date-fns')
-const { zonedTimeToUtc } = require('date-fns-tz')
-
 const User = use('App/Models/User')
-const Token = use('App/Models/Token')
+// const Token = use('App/Models/Token')
 
 class SessionController {
   async store ({ request, auth }) {
@@ -14,14 +11,12 @@ class SessionController {
     if (email === 'mapa@cadastra.com') {
       expiresIn = { expiresIn: '2h' }
     }
-    // const parsedDate = parseISO()
-    // const znDate = zonedTimeToUtc(new Date(), 'America/Sao_Paulo')
-    // console.log(znDate)
     const token = await auth.attempt(email, password, null, expiresIn)
 
     const user = await User.query()
       .where('email', email)
       .first()
+
     const roles = await user.getRoles()
 
     if (roles.includes('administrator')) {

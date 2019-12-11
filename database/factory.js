@@ -14,19 +14,11 @@
 /** @type {import('@adonisjs/lucid/src/Factory')} */
 const Factory = use('Factory')
 
-Factory.blueprint('Adonis/Acl/Permission', async (faker, index, data) => {
-  try {
-    console.log(`${data.length} index ${index}  data ${data[index].name}`)
-  } catch (err) {
-    console.log(`RUIM!!!!! ${index},`)
-    console.log(`data ${data[index].name}`)
-  }
-  // return {
-  //   slug: data[index].slug,
-  //   name: data[index].name,
-  //   description: data[index].description
-  // }
-})
+Factory.blueprint('Adonis/Acl/Permission', async (faker, index, data) => ({
+  slug: data[index].slug,
+  name: data[index].name,
+  description: data[index].description
+}))
 Factory.blueprint('Adonis/Acl/Role', async (faker, index, data) => ({
   slug: data[index].slug,
   name: data[index].name,
