@@ -150,6 +150,36 @@ class RoleSeeder {
         role_id: 1,
         created_at: new Date(),
         updated_at: new Date()
+      },
+      {
+        permission_id: 21,
+        role_id: 1,
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        permission_id: 22,
+        role_id: 1,
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        permission_id: 23,
+        role_id: 1,
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        permission_id: 24,
+        role_id: 1,
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        permission_id: 25,
+        role_id: 1,
+        created_at: new Date(),
+        updated_at: new Date()
       }
     ])
   }

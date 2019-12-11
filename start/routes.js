@@ -31,7 +31,7 @@ Route.put('forgotpassword', 'ForgotPasswordController.update').validator(
 Route.group(() => {
   // users
   Route.get('users', 'UserController.index').middleware('can:read_users')
-  Route.get('users/:id', 'UserController.show').middleware('can:read_users')
+  Route.get('users/:id', 'UserController.show')
   Route.post('users', 'UserController.store')
     .validator('User/store')
     .middleware('can:create_users')
