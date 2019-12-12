@@ -2,27 +2,26 @@
 
 const { test, trait } = use('Test/Suite')('Sessão')
 
-const User = use('App/Models/User')
+/** @type {import('@adonisjs/lucid/src/Factory')} */
+const Factory = use('Factory')
 
 trait('Test/ApiClient')
+trait('DatabaseTransactions')
 
 test('Deve retornar um token JWT ao criar uma nova sessao', async ({
   assert,
   client
 }) => {
   // await ace.call('route:list', {}, { silent: true })
-  await User.create({
-    name: 'adminsitrador',
-    email: 'admin@cadastra.com',
-    password: '123'
-  })
+  const loginUser = {
+    email: 'email@cadastra.com',
+    password: '1234'
+  }
+  await Factory.model('App/Models/User').create(loginUser)
 
   const response = await client
     .post('/session')
-    .send({
-      email: 'admin@cadastra.com',
-      password: '123'
-    })
+    .send(loginUser)
     .end()
 
   response.assertStatus(200)
@@ -38,9 +37,10 @@ test('Usuário não cadastrado não deve poder fazer login', async ({
     .post('/session')
     .send({
       email: 'usuarionaocadastrado@cadastra.com',
-      password: '123'
+      password: '12345'
     })
     .end()
+
   response.assertStatus(401)
   assert.equal(response.body.error.name, 'UserNotFoundException')
 })

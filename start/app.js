@@ -21,7 +21,8 @@ const providers = [
   '@adonisjs/validator/providers/ValidatorProvider',
   'adonis-swagger/providers/SwaggerProvider',
   'adonis-acl/providers/AclProvider',
-  'adonis-scheduler/providers/SchedulerProvider'
+  'adonis-scheduler/providers/SchedulerProvider',
+  '@adonisjs/mail/providers/MailProvider'
 ]
 
 /*
@@ -38,7 +39,6 @@ const aceProviders = [
   'adonis-acl/providers/CommandsProvider',
   'adonis-scheduler/providers/CommandsProvider',
   '@adonisjs/vow/providers/VowProvider'
-
 ]
 
 /*
