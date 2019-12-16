@@ -6,10 +6,10 @@ const { test, trait } = use('Test/Suite')('Esqueci minha senha')
 /** @type {import('@adonisjs/lucid/src/Factory')} */
 const Factory = use('Factory')
 
-// const ace = require('@adonisjs/ace')
+const User = use('App/Models/User')
 
 trait('Test/ApiClient')
-trait('DatabaseTransactions')
+// trait('DatabaseTransactions')
 
 test('Deve enviar um email com as instruções para resetar a senha', async ({
   assert,
@@ -17,21 +17,26 @@ test('Deve enviar um email com as instruções para resetar a senha', async ({
 }) => {
   Mail.fake()
 
-  const user = {
+  const findUser = {
     email: 'email@cadastra.com',
     redirect_url: 'local.com.br'
   }
 
-  await Factory.model('App/Models/User').create({ email: user.email })
+  await Factory.model('App/Models/User').create({ email: findUser.email })
 
   const response = await client
     .post('/forgotpassword')
-    .send(user)
+    .send(findUser)
     .end()
 
+  const { token } = User.query()
+    .where('email', findUser.email)
+    .first()
+
   response.assertStatus(200)
+  assert.isNotNull(token)
 
   const recentEmail = Mail.pullRecent()
-  assert.equal(recentEmail.message.to[0].address, user.email)
+  assert.equal(recentEmail.message.to[0].address, findUser.email)
   Mail.restore()
 })

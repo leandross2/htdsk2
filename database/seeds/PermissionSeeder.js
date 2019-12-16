@@ -54,12 +54,14 @@ class PermissionSeeder {
       {
         slug: 'read_departments',
         name: 'Read departments',
-        description: 'Permite leitura dos registro dos departamentos cadastrados'
+        description:
+          'Permite leitura dos registro dos departamentos cadastrados'
       },
       {
         slug: 'read_one_departments',
         name: 'Read one departments',
-        description: 'Permite a leitura do registro de um departamento expecifico'
+        description:
+          'Permite a leitura do registro de um departamento expecifico'
       },
       {
         slug: 'delete_departments',
@@ -109,7 +111,8 @@ class PermissionSeeder {
       {
         slug: 'read_one_schedule',
         name: 'Read one schedule',
-        description: 'Permite a leitura do registro de um agendamento expecifico'
+        description:
+          'Permite a leitura do registro de um agendamento expecifico'
       },
       {
         slug: 'delete_schedules',

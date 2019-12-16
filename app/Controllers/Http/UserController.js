@@ -4,7 +4,7 @@ const User = use('App/Models/User')
 const Department = use('App/Models/Department')
 
 class UserController {
-  async store ({ request }) {
+  async store ({ request, response }) {
     const { permissions, roles, ...data } = request.only([
       'name',
       'email',
@@ -23,12 +23,13 @@ class UserController {
       await user.roles().attach(roles)
     }
     if (permissions) {
-      await user.permissions().attach(permissions)
+      console.log(permissions)
+      await user.permissions().attach([1])
     }
 
     await user.loadMany(['roles', 'permissions'])
 
-    return user
+    return response.status(201).send(user)
   }
 
   async index () {
@@ -74,14 +75,22 @@ class UserController {
     return user
   }
 
-  async show ({ params, auth }) {
+  async show ({ params, response, auth }) {
     const userLogged = auth.user
-    const isAdmin = userLogged.getRoles('administrator')
+    const isAdmin = await userLogged.getRoles('')
+    const havePermisssion = await userLogged.getPermissions()
 
-    if (!isAdmin || userLogged.id != params.id) {
-      return {
-        error: { message: 'Você não tem permissao para ver este usuario' }
-      }
+    if (
+      !isAdmin.includes('administrator') &&
+      !havePermisssion.includes('read_one_users') &&
+      userLogged.id != params.id
+    ) {
+      return response.status(403).send({
+        error: {
+          message: 'Você não tem permissao para ver este usuario',
+          name: 'ForbiddenException'
+        }
+      })
     }
 
     const user = await User.findOrFail(params.id)
@@ -92,7 +101,8 @@ class UserController {
       user.type = await user.getRoles()
       user.permissions = await user.getPermissions()
     }
-    return user
+
+    return response.status(200).send(user)
   }
 
   async destroy ({ params }) {

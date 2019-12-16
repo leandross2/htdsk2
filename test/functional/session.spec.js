@@ -12,11 +12,11 @@ test('Deve retornar um token JWT ao criar uma nova sessao', async ({
   assert,
   client
 }) => {
-  // await ace.call('route:list', {}, { silent: true })
   const loginUser = {
-    email: 'email@cadastra.com',
+    email: 'umemaildetestquenaoexiste@cadastra.com',
     password: '1234'
   }
+
   await Factory.model('App/Models/User').create(loginUser)
 
   const response = await client
