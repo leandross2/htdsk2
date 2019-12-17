@@ -1,10 +1,9 @@
 'use strict'
 
 const User = use('App/Models/User')
-const Department = use('App/Models/Department')
 
 class UserController {
-  async store ({ request, response }) {
+  async store({ request, response }) {
     const { permissions, roles, ...data } = request.only([
       'name',
       'email',
@@ -14,17 +13,13 @@ class UserController {
       'roles'
     ])
 
-    if (data.department_id) {
-      await Department.findOrFail(data.department_id)
-    }
     const user = await User.create(data)
 
     if (roles) {
       await user.roles().attach(roles)
     }
     if (permissions) {
-      console.log(permissions)
-      await user.permissions().attach([1])
+      await user.permissions().attach(permissions)
     }
 
     await user.loadMany(['roles', 'permissions'])
@@ -32,12 +27,12 @@ class UserController {
     return response.status(201).send(user)
   }
 
-  async index () {
+  async index() {
     const users = User.all()
     return users
   }
 
-  async update ({ params, request, auth }) {
+  async update({ params, request, auth }) {
     const { id } = params
     const {
       permissions,
@@ -75,7 +70,7 @@ class UserController {
     return user
   }
 
-  async show ({ params, response, auth }) {
+  async show({ params, response, auth }) {
     const userLogged = auth.user
     const isAdmin = await userLogged.getRoles('')
     const havePermisssion = await userLogged.getPermissions()
@@ -105,7 +100,7 @@ class UserController {
     return response.status(200).send(user)
   }
 
-  async destroy ({ params }) {
+  async destroy({ params }) {
     const user = await User.findOrFail(params.id)
     await user.delete()
   }

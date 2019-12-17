@@ -1,7 +1,9 @@
 'use strict'
 
 const Mail = use('Mail')
-const { test, trait } = use('Test/Suite')('Esqueci minha senha')
+const { test, trait, beforeEach, afterEach } = use('Test/Suite')(
+  'FORGOT PASSWORD - Esqueci minha senha'
+)
 
 /** @type {import('@adonisjs/lucid/src/Factory')} */
 const Factory = use('Factory')
@@ -9,34 +11,75 @@ const Factory = use('Factory')
 const User = use('App/Models/User')
 
 trait('Test/ApiClient')
-// trait('DatabaseTransactions')
+trait('DatabaseTransactions')
+
+beforeEach(() => {
+  Mail.fake()
+})
+afterEach(() => {
+  Mail.fake()
+})
+async function generateTokenResetPassword(email, redirect_url, client) {
+  await Factory.model('App/Models/User').create({ email })
+
+  await client
+    .post('/forgotpassword')
+    .send({ email, redirect_url })
+    .end()
+
+  const { token } = await User.query()
+    .where('email', email)
+    .first()
+
+  return token
+}
 
 test('Deve enviar um email com as instruções para resetar a senha', async ({
   assert,
   client
 }) => {
-  Mail.fake()
-
   const findUser = {
     email: 'email@cadastra.com',
     redirect_url: 'local.com.br'
   }
+  const token = await generateTokenResetPassword(
+    findUser.email,
+    findUser.redirect_url,
+    client
+  )
 
-  await Factory.model('App/Models/User').create({ email: findUser.email })
-
-  const response = await client
-    .post('/forgotpassword')
-    .send(findUser)
-    .end()
-
-  const { token } = User.query()
-    .where('email', findUser.email)
-    .first()
-
-  response.assertStatus(200)
   assert.isNotNull(token)
 
   const recentEmail = Mail.pullRecent()
   assert.equal(recentEmail.message.to[0].address, findUser.email)
-  Mail.restore()
 })
+
+// test('Deve poder a resetar a senha, após receber o email com o token para alterar a senha', async ({
+//   assert,
+//   client
+// }) => {
+//   const findUser = {
+//     email: 'email@cadastra.com',
+//     redirect_url: 'local.com.br'
+//   }
+
+//   const token = await generateTokenResetPassword(
+//     findUser.email,
+//     findUser.redirect_url,
+//     client
+//   )
+//   const response = await client
+//     .put('/forgotpassword')
+//     .send({
+//       password: 111,
+//       password_confirmation: 111,
+//       token
+//     })
+//     .end()
+//   console.log(token, response.body)
+//   response.assertStatus(200)
+//   assert.isNotNull(token)
+
+//   const recentEmail = Mail.pullRecent()
+//   assert.equal(recentEmail.message.to[0].address, findUser.email)
+// })

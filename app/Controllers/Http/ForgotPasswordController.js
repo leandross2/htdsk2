@@ -1,22 +1,23 @@
 'use strict'
 
 const crypto = require('crypto')
-const moment = require('moment')
+const { subHours, isAfter, parseISO } = require('date-fns')
 
 const User = use('App/Models/User')
 const Mail = use('Mail')
 
 class ForgotPasswordController {
-  async store ({ request, response }) {
+  async store({ request, response }) {
     try {
       const email = request.input('email')
       const user = await User.findByOrFail('email', email)
 
-      user.token = crypto.randomBytes(10).toString('hex')
+      user.token = crypto.randomBytes(24).toString('hex')
 
       user.token_created_at = new Date()
 
       await user.save()
+
       return await Mail.send(
         ['emails.forgot_password'],
         {
@@ -24,7 +25,7 @@ class ForgotPasswordController {
           token: user.token,
           link: `${request.input('redirect_url')}?token=${user.token}`
         },
-        (message) => {
+        message => {
           message
             .to(user.email)
             .from('no-reply@cadatra.com')
@@ -38,15 +39,13 @@ class ForgotPasswordController {
     }
   }
 
-  async update ({ request, response }) {
+  async update({ request, response }) {
+    const { token, password } = request.all()
+    const user = await User.findByOrFail('token', token)
     try {
-      const { token, password } = request.all()
-
-      const user = await User.findByOrFail('token', token)
-
-      const tokenExpired = moment()
-        .subtract(1, 'days')
-        .isAfter(user.token_created_at)
+      const date = parseISO(new Date())
+      const dateSub = subHours(date, 1)
+      const tokenExpired = isAfter(dateSub, user.token_created_at)
 
       if (tokenExpired) {
         return response
@@ -54,17 +53,16 @@ class ForgotPasswordController {
           .send({ error: { message: 'Token expirado' } })
       }
 
+      user.password = password
       user.token = null
       user.token_created_at = null
-      user.password = password
+
+      // user.merge(newData)
 
       await user.save()
-
-      return
     } catch (err) {
-      return response
-        .status(err.status)
-        .send({ error: { message: 'Token inválido' } })
+      console.log(user, err)
+      return response.status(401).send({ error: { message: 'Token inválido' } })
     }
   }
 }

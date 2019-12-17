@@ -9,8 +9,8 @@ const Factory = use('Factory')
 
 trait('Test/ApiClient')
 trait('Auth/Client')
-// trait('DatabaseTransactions') // meu ve pq ta dando erro essa parada ai.
-// o teste da OK mas tem um erro de banco, sei la...
+// trait('DatabaseTransactions')
+// o loginVia ta dando treta com essa trait
 
 test('Usuário sem a permissao de "create_user", não pode cadastrar um novo usuario', async ({
   assert,

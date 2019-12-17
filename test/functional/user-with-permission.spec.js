@@ -8,6 +8,7 @@ const Permission = use('Permission')
 
 trait('Test/ApiClient')
 trait('Auth/Client')
+// trait('DatabaseTransactions')
 
 test('Usuário com a permissao de "create_users", podera cadastrar um novo usuario', async ({
   assert,
@@ -52,6 +53,7 @@ test('Usuário com a permissao de "read_users", poderá listar todos os usuarios
     .get('users')
     .loginVia(user)
     .end()
+
   response.assertStatus(200)
 })
 
@@ -64,14 +66,14 @@ test('Usuário com a permissao de "read_one_user", poderá listar detalhes de ou
   const permission = await Permission.query()
     .where('slug', 'read_one_users')
     .first()
+  const [userLogin, findUser] = users
 
-  await users[0].permissions().attach(permission.id)
+  await userLogin.permissions().attach(permission.id)
 
   const response = await client
-    .get(`users/${users[1].id}`)
-    .loginVia(users[0])
+    .get(`users/${findUser.id}`)
+    .loginVia(userLogin)
     .end()
-
   response.assertStatus(200)
   assert.exists(response.body.id)
 })
