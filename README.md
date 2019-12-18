@@ -1,28 +1,55 @@
-# Adonis API application
+# HOTDESK
 
-This is the boilerplate for creating an API server in AdonisJs, it comes pre-configured with.
+## API
 
-1. Bodyparser
-2. Authentication
-3. CORS
-4. Lucid ORM
-5. Migrations and seeds
+O projeto foi feito utilizando
 
-## Setup
+1. AdonisJs
+2. yarn
+3. postgres
+4. vow
+5. Migrations e seeds
 
-Use the adonis command to install the blueprint
+### Setup
+
+Utilize o comando yarn para instalar as dependências
 
 ```bash
-adonis new yardstick --api-only
+yarn
 ```
 
-or manually clone the repo and then run `npm install`.
+### .env
 
+altere o nome do aquivo `.env-example` para `.env` e preencha os valores das variáveis
 
 ### Migrations
 
-Run the following command to run startup migrations.
+Após preencher as variáveis no .env execute o comando no terminal dentro da pasta do projeto para criar as tabelas do banco.
 
 ```js
 adonis migration:run
+```
+
+### Seeds
+
+Após executar as migrations execute o comando para executar as seeds no DB
+
+```js
+adonis seed
+```
+
+### Executando a API
+
+Para executar a api basta executar o comando
+
+```js
+adonis serve
+```
+
+## Testes
+
+Para executar os testes automatizados da api execute o comando
+
+```js
+adonis test
 ```
