@@ -19,7 +19,7 @@ beforeEach(() => {
 afterEach(() => {
   Mail.fake()
 })
-async function generateTokenResetPassword(email, redirect_url, client) {
+async function generateTokenResetPassword (email, redirect_url, client) {
   await Factory.model('App/Models/User').create({ email })
 
   await client
@@ -54,32 +54,32 @@ test('Deve enviar um email com as instruções para resetar a senha', async ({
   assert.equal(recentEmail.message.to[0].address, findUser.email)
 })
 
-// test('Deve poder a resetar a senha, após receber o email com o token para alterar a senha', async ({
-//   assert,
-//   client
-// }) => {
-//   const findUser = {
-//     email: 'email@cadastra.com',
-//     redirect_url: 'local.com.br'
-//   }
+test.skip('Deve poder a resetar a senha, após receber o email com o token para alterar a senha', async ({
+  assert,
+  client
+}) => {
+  const findUser = {
+    email: 'email@cadastra.com',
+    redirect_url: 'local.com.br'
+  }
 
-//   const token = await generateTokenResetPassword(
-//     findUser.email,
-//     findUser.redirect_url,
-//     client
-//   )
-//   const response = await client
-//     .put('/forgotpassword')
-//     .send({
-//       password: 111,
-//       password_confirmation: 111,
-//       token
-//     })
-//     .end()
-//   console.log(token, response.body)
-//   response.assertStatus(200)
-//   assert.isNotNull(token)
+  const token = await generateTokenResetPassword(
+    findUser.email,
+    findUser.redirect_url,
+    client
+  )
+  const response = await client
+    .put('/forgotpassword')
+    .send({
+      password: 111,
+      password_confirmation: 111,
+      token
+    })
+    .end()
+  console.log(token, response.body)
+  response.assertStatus(200)
+  assert.isNotNull(token)
 
-//   const recentEmail = Mail.pullRecent()
-//   assert.equal(recentEmail.message.to[0].address, findUser.email)
-// })
+  const recentEmail = Mail.pullRecent()
+  assert.equal(recentEmail.message.to[0].address, findUser.email)
+})
