@@ -19,7 +19,7 @@ beforeEach(() => {
 afterEach(() => {
   Mail.fake()
 })
-async function generateTokenResetPassword (email, redirect_url, client) {
+async function generateTokenResetPassword(email, redirect_url, client) {
   await Factory.model('App/Models/User').create({ email })
 
   await client
