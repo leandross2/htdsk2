@@ -10,7 +10,7 @@ const Factory = use('Factory')
 trait('Test/ApiClient')
 trait('Auth/Client')
 // trait('DatabaseTransactions')
-// o loginVia ta dando treta com essa trait a
+// o loginVia ta dando treta com essa trait
 
 test('Usuário sem a permissao de "create_user", não pode cadastrar um novo usuario', async ({
   assert,
