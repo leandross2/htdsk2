@@ -60,6 +60,7 @@ class ForgotPasswordController {
       // user.merge(newData)
 
       await user.save()
+      return response.status(200)
     } catch (err) {
       console.log(user, err)
       return response.status(401).send({ error: { message: 'Token inválido' } })

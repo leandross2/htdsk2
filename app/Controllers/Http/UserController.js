@@ -28,7 +28,7 @@ class UserController {
   }
 
   async index() {
-    const users = User.all()
+    const users = await User.all()
     return users
   }
 

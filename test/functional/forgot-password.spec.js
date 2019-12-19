@@ -1,12 +1,13 @@
 'use strict'
 
-const Mail = use('Mail')
 const { test, trait, beforeEach, afterEach } = use('Test/Suite')(
   'FORGOT PASSWORD - Esqueci minha senha'
 )
 
 /** @type {import('@adonisjs/lucid/src/Factory')} */
 const Factory = use('Factory')
+const Mail = use('Mail')
+const { subHours } = require('date-fns')
 
 const User = use('App/Models/User')
 
@@ -27,22 +28,22 @@ async function generateTokenResetPassword(email, redirect_url, client) {
     .send({ email, redirect_url })
     .end()
 
-  const { token } = await User.query()
+  const user = await User.query()
     .where('email', email)
     .first()
 
-  return token
+  return user
 }
 
 test('Deve enviar um email com as instruções para resetar a senha', async ({
   assert,
-  client
+  client,
 }) => {
   const findUser = {
     email: 'email@cadastra.com',
-    redirect_url: 'local.com.br'
+    redirect_url: 'local.com.br',
   }
-  const token = await generateTokenResetPassword(
+  const { token } = await generateTokenResetPassword(
     findUser.email,
     findUser.redirect_url,
     client
@@ -56,14 +57,14 @@ test('Deve enviar um email com as instruções para resetar a senha', async ({
 
 test.skip('Deve poder a resetar a senha, após receber o email com o token para alterar a senha', async ({
   assert,
-  client
+  client,
 }) => {
   const findUser = {
     email: 'email@cadastra.com',
-    redirect_url: 'local.com.br'
+    redirect_url: 'local.com.br',
   }
 
-  const token = await generateTokenResetPassword(
+  const { token } = await generateTokenResetPassword(
     findUser.email,
     findUser.redirect_url,
     client
@@ -73,10 +74,9 @@ test.skip('Deve poder a resetar a senha, após receber o email com o token para 
     .send({
       password: 111,
       password_confirmation: 111,
-      token
+      token,
     })
     .end()
-  console.log(token, response.body)
   response.assertStatus(200)
   assert.isNotNull(token)
 

@@ -15,12 +15,13 @@ const Factory = use('Factory')
 const Database = use('Database')
 
 class UserSeeder {
-  async run () {
+  async run() {
     await Factory.model('App/Models/User').create({
       name: 'admin',
       email: 'administrator@cadastra.com',
       password: '123'
     })
+
     await Database.table('role_user').insert({
       role_id: 1,
       user_id: 1,
