@@ -5,7 +5,7 @@ const { startOfDay, endOfDay, parseISO } = require('date-fns')
 const Schedule = use('App/Models/Schedule')
 
 class CheckoutController {
-  async index ({ request, query }) {
+  async index({ request, query }) {
     const { date } = request.get()
 
     const parsedDate = parseISO(date)
@@ -21,7 +21,7 @@ class CheckoutController {
     return schedules
   }
 
-  async update ({ request, params }) {
+  async update({ request, params }) {
     const schedule = await Schedule.findOrFail(params.id)
     console.log(schedule)
     schedule.date_checkout = new Date()

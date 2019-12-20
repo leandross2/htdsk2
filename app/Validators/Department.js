@@ -1,7 +1,7 @@
 'use strict'
 
 class Department {
-  get rules () {
+  get rules() {
     return {
       // validation rules
       name: 'required'

@@ -2,7 +2,7 @@
 
 const Helpers = use('Helpers')
 class DocumentationController {
-  async index () {
+  async index() {
     return Helpers.publicPath()
   }
 }

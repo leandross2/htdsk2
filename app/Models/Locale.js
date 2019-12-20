@@ -4,7 +4,7 @@
 const Model = use('Model')
 
 class Locale extends Model {
-  desks () {
+  desks() {
     return this.hasMany('App/Models/Desk')
   }
 }

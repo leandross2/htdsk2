@@ -1,7 +1,7 @@
 'use strict'
 
 class Session {
-  get rules () {
+  get rules() {
     return {
       // validation rules
       email: 'required|email',

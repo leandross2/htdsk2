@@ -4,7 +4,7 @@ const User = use('App/Models/User')
 // const Token = use('App/Models/Token')
 
 class SessionController {
-  async store ({ request, auth }) {
+  async store({ request, auth }) {
     const { email, password } = request.all()
 
     let expiresIn = null

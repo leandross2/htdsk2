@@ -18,7 +18,7 @@ class DepartmentController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index () {
+  async index() {
     const departments = Department.all()
     return departments
   }
@@ -31,7 +31,7 @@ class DepartmentController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request }) {
+  async store({ request }) {
     const { name } = request.only('name')
 
     const department = await Department.create({ name })
@@ -47,7 +47,7 @@ class DepartmentController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async update ({ params, request }) {
+  async update({ params, request }) {
     const { id } = params
     const { name } = request.only('name')
 
@@ -67,7 +67,7 @@ class DepartmentController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params }) {
+  async destroy({ params }) {
     const { id } = params
 
     const department = await Department.findOrFail(id)

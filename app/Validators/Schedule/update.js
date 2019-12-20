@@ -1,11 +1,11 @@
 'use strict'
 
 class ScheduleUpdate {
-  get validateAll () {
+  get validateAll() {
     return true
   }
 
-  get rules () {
+  get rules() {
     const { id } = this.ctx.auth.user
     return {
       dateSchedule: 'date',

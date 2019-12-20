@@ -1,11 +1,11 @@
 'use strict'
 
 class ForgotPasswordUpdate {
-  get validateAll () {
+  get validateAll() {
     return true
   }
 
-  get rules () {
+  get rules() {
     return {
       // validation rules
       token: 'required',

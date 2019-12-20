@@ -76,9 +76,9 @@ class UserController {
     const havePermisssion = await userLogged.getPermissions()
 
     if (
-      !isAdmin.includes('administrator') &&
-      !havePermisssion.includes('read_one_users') &&
-      userLogged.id != params.id
+      !isAdmin.includes('administrator')
+      && !havePermisssion.includes('read_one_users')
+      && userLogged.id != params.id
     ) {
       return response.status(403).send({
         error: {

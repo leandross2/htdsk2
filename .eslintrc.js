@@ -19,5 +19,6 @@ module.exports = {
     camelcase: 'off',
     'comma-dangle': 'off',
     'class-methods-use-this': 'off',
+    'arrow-parens': 'off',
   },
 }

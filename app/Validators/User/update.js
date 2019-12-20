@@ -1,11 +1,11 @@
 'use strict'
 
 class UserUpdate {
-  get validateAll () {
+  get validateAll() {
     return true
   }
 
-  get rules () {
+  get rules() {
     const userId = this.ctx.params.id
     return {
       // validation rules

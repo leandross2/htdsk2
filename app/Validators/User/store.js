@@ -1,11 +1,11 @@
 'use strict'
 
 class UserStore {
-  get validateAll () {
+  get validateAll() {
     return true
   }
 
-  get rules () {
+  get rules() {
     return {
       // validation rules
       name: 'required',

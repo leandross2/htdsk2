@@ -4,11 +4,11 @@
 const Model = use('Model')
 
 class Schedule extends Model {
-  user () {
+  user() {
     return this.belongsTo('App/Models/User')
   }
 
-  desk () {
+  desk() {
     return this.belongsTo('App/Models/Desk')
   }
 }

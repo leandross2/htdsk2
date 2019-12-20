@@ -4,7 +4,7 @@ const { test, trait } = use('Test/Suite')('SCHEDULE - usuario com permissão')
 const Permission = use('Permission')
 const Factory = use('Factory')
 
-const { parseISO, isBefore } = require('date-fns')
+const { startOfYesterday } = require('date-fns')
 
 trait('Test/ApiClient')
 trait('Auth/Client')
@@ -132,16 +132,52 @@ test('Não deve poder fazer checkin em uma data passada', async ({
 
   await user.permissions().attach(permission.id)
 
+  const yesterday = startOfYesterday()
+
   const response = await client
     .post('/schedules')
     .loginVia(user)
     .send({
-      dateSchedule: new Date(),
+      dateSchedule: yesterday,
       userId: user.id,
       deskId: desk.id,
     })
     .end()
 
-  response.assertStatus(200)
-  assert.exists(response.body.id)
+  assert.equal(response.status, 401)
+})
+
+test('Não deve ser possivel um usuário comum fazer checkin/agendamento para outro usuario', async ({
+  assert,
+  client,
+}) => {
+  const [desk] = await Factory.model('App/Models/Desk').createMany(1, [
+    {
+      description: 'A1',
+      position: 'ali',
+      locale_id: 1,
+    },
+  ])
+
+  const users = await Factory.model('App/Models/User').createMany(2)
+  const permission = await Permission.query()
+    .where('slug', 'create_schedules')
+    .first()
+
+  const userWithPermisssion = await users.map(
+    async user => await user.permissions().attach(permission.id)
+  )
+  console.log(userWithPermisssion)
+  // const response = await client
+  //   .post('/schedules')
+  //   .loginVia(user)
+  //   .send({
+  //     dateSchedule: new Date(),
+  //     userId: user.id,
+  //     deskId: desk.id,
+  //   })
+  //   .end()
+
+  // response.assertStatus(200)
+  // assert.exists(response.body.id)
 })

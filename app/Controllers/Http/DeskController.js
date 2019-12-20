@@ -18,7 +18,7 @@ class DeskController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index () {
+  async index() {
     const desks = await Desk.all()
 
     return desks
@@ -32,7 +32,7 @@ class DeskController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request }) {
+  async store({ request }) {
     const data = request.only(['description', 'position'])
 
     const desk = await Desk.create(data)
@@ -49,7 +49,7 @@ class DeskController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params }) {
+  async show({ params }) {
     const desk = await Desk.query()
       .where('id', params.id)
       .with('locale')
@@ -66,7 +66,7 @@ class DeskController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params }) {
+  async destroy({ params }) {
     const desk = await Desk.find(params.id)
 
     await desk.delete()

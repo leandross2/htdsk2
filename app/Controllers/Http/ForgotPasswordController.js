@@ -25,7 +25,7 @@ class ForgotPasswordController {
           token: user.token,
           link: `${request.input('redirect_url')}?token=${user.token}`
         },
-        message => {
+        (message) => {
           message
             .to(user.email)
             .from('no-reply@cadatra.com')

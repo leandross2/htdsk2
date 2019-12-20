@@ -3,7 +3,7 @@
 class ForgotPasswordStore {
   get rules() {
     return {
-      email: "required|email"
+      email: 'required|email'
     }
   }
 }

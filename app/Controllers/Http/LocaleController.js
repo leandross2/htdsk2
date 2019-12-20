@@ -17,7 +17,7 @@ class LocaleController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async index ({ request, response, view }) {
+  async index({ request, response, view }) {
     const locales = await Locale.all()
 
     return locales
@@ -31,7 +31,7 @@ class LocaleController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store ({ request, response }) {
+  async store({ request, response }) {
     // O MEU BOTA UM UNIQUE NA COLUNA DESCRIPTION LA NA MIGRATION, TA LIGADO?
     const data = request.only('description')
 
@@ -49,7 +49,9 @@ class LocaleController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show ({ params, request, response, view }) {
+  async show({
+    params, request, response, view
+  }) {
     const { id } = params
 
     const locale = Locale
@@ -68,7 +70,7 @@ class LocaleController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async destroy ({ params }) {
+  async destroy({ params }) {
     const locale = await Locale.find(params.id)
 
     await locale.delete()

@@ -1,11 +1,11 @@
 'use strict'
 
 class DeskStore {
-  get validateAll () {
+  get validateAll() {
     return true
   }
 
-  get rules () {
+  get rules() {
     return {
       // validation rules
       description: 'required',

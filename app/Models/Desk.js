@@ -4,11 +4,11 @@
 const Model = use('Model')
 
 class Desk extends Model {
-  user () {
+  user() {
     return this.belongsTo('App/Models/User')
   }
 
-  locale () {
+  locale() {
     return this.belongsTo('App/Models/Locale')
   }
 }

@@ -8,7 +8,7 @@ const Database = use('Database')
 const Hash = use('Hash')
 
 class User extends Model {
-  static boot () {
+  static boot() {
     super.boot()
     this.addHook('beforeSave', async (userInstance) => {
       if (userInstance.dirty.password) {
@@ -17,7 +17,7 @@ class User extends Model {
     })
   }
 
-  static get hidden () {
+  static get hidden() {
     return ['password']
   }
 
@@ -31,23 +31,23 @@ class User extends Model {
    *
    * @return {Object}
    */
-  tokens () {
+  tokens() {
     return this.hasMany('App/Models/Token')
   }
 
-  static get computed () {
+  static get computed() {
     return ['admin']
   }
 
-  getAdmin (user) {
+  getAdmin(user) {
     // return type === 'adminsitrator'
   }
 
-  roles () {
+  roles() {
     return this.hasMany('Adonis/Acl/HasRole')
   }
 
-  static get traits () {
+  static get traits() {
     return [
       '@provider:Adonis/Acl/HasRole',
       '@provider:Adonis/Acl/HasPermission'
