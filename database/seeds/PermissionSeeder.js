@@ -14,8 +14,8 @@
 const Factory = use('Factory')
 
 class PermissionSeeder {
-  async run () {
-    await Factory.model('Adonis/Acl/Permission').createMany(25, [
+  async run() {
+    await Factory.model('Adonis/Acl/Permission').createMany(26, [
       {
         slug: 'create_users',
         name: 'Create user',
@@ -97,6 +97,11 @@ class PermissionSeeder {
         slug: 'create_schedules',
         name: 'Create schedules',
         description: 'Permite o cadastro de novos agendamentos'
+      },
+      {
+        slug: 'create_for_others_schedules',
+        name: 'Create for others schedules',
+        description: 'Permite o cadastro de novos agendamentos para outros usuarios'
       },
       {
         slug: 'update_schedules',

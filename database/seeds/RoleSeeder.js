@@ -15,7 +15,7 @@ const Factory = use('Factory')
 const Database = use('Database')
 
 class RoleSeeder {
-  async run () {
+  async run() {
     await Factory.model('Adonis/Acl/Role').createMany(1, [
       {
         slug: 'administrator',
@@ -177,6 +177,12 @@ class RoleSeeder {
       },
       {
         permission_id: 25,
+        role_id: 1,
+        created_at: new Date(),
+        updated_at: new Date()
+      },
+      {
+        permission_id: 26,
         role_id: 1,
         created_at: new Date(),
         updated_at: new Date()

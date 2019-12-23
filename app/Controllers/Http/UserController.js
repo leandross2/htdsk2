@@ -78,7 +78,7 @@ class UserController {
     if (
       !isAdmin.includes('administrator')
       && !havePermisssion.includes('read_one_users')
-      && userLogged.id != params.id
+      && userLogged.id !== Number(params.id)
     ) {
       return response.status(403).send({
         error: {

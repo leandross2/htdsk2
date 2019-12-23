@@ -30,7 +30,7 @@ class ScheduleController {
   async index({ request, response }) {
     const { date } = request.get()
     if (!date || parseISO(date) == 'Invalid Date') {
-      return response.status(401).send({ error: { message: 'data invalida' } })
+      return response.status(400).send({ error: { message: 'data invalida' } })
     }
     const parsedDate = parseISO(date)
 
@@ -52,7 +52,7 @@ class ScheduleController {
    * @param {Request} ctx.request
    * @param {Response} ctx.response
    */
-  async store({ request, response }) {
+  async store({ request, response, auth }) {
     const { dateSchedule, userId: user_id, deskId: desk_id } = request.all()
 
     const startDaySchedule = startOfDay(parseISO(dateSchedule))
@@ -62,6 +62,14 @@ class ScheduleController {
         .status(401)
         .send({ error: { message: 'Esta data já passou' } })
     }
+
+    const { user: userLogged } = auth
+
+    const permissions = await userLogged.getPermissions()
+
+    if (!permissions.includes('create_schedules') && !permissions.includes('create_for_others_schedules')) {
+      return response.status(403).send({ error: { message: 'Você não tem permissão' } })
+    }
     // console.log(utcToZonedTime(startDaySchedule, 'America/Bahia'))
     const schedule = await Schedule.create({
       date_schedule: startDaySchedule,
@@ -69,7 +77,7 @@ class ScheduleController {
       desk_id,
     })
 
-    return schedule
+    return response.status(201).send(schedule)
   }
 
   /**

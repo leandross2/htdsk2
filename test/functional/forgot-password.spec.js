@@ -1,6 +1,8 @@
 'use strict'
 
-const { test, trait, beforeEach, afterEach } = use('Test/Suite')(
+const {
+  test, trait, beforeEach, afterEach
+} = use('Test/Suite')(
   'FORGOT PASSWORD - Esqueci minha senha'
 )
 
