@@ -20,5 +20,7 @@ module.exports = {
     'comma-dangle': 'off',
     'class-methods-use-this': 'off',
     'arrow-parens': 'off',
+    'implicit-arrow-linebreak': 'off',
+    'function-paren-newline': 'off',
   },
 }

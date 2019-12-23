@@ -10,6 +10,8 @@ const {
   parseISO,
   startOfToday,
   isBefore,
+  startOfTomorrow,
+  subHours,
 } = require('date-fns')
 // const { utcToZonedTime } = require('date-fns-tz')
 
@@ -53,22 +55,36 @@ class ScheduleController {
    * @param {Response} ctx.response
    */
   async store({ request, response, auth }) {
-    const { dateSchedule, userId: user_id, deskId: desk_id } = request.all()
-
+    const { dateSchedule, user_id, desk_id } = request.all()
     const startDaySchedule = startOfDay(parseISO(dateSchedule))
+
     const invalidDate = isBefore(startDaySchedule, startOfToday())
+
     if (invalidDate) {
       return response
         .status(401)
         .send({ error: { message: 'Esta data já passou' } })
     }
 
+    const tomorrowSub = subHours(startOfTomorrow(), 9)
+    const validhour = isBefore(tomorrowSub, new Date())
+
+    if (!validhour) {
+      return response.status(401).send({
+        error: { message: 'Agendamento ainda não foi liberado' },
+      })
+    }
     const { user: userLogged } = auth
 
     const permissions = await userLogged.getPermissions()
 
-    if (!permissions.includes('create_schedules') && !permissions.includes('create_for_others_schedules')) {
-      return response.status(403).send({ error: { message: 'Você não tem permissão' } })
+    if (
+      !permissions.includes('create_schedules') &&
+      !permissions.includes('create_for_others_schedules')
+    ) {
+      return response
+        .status(403)
+        .send({ error: { message: 'Você não tem permissão' } })
     }
     // console.log(utcToZonedTime(startDaySchedule, 'America/Bahia'))
     const schedule = await Schedule.create({
@@ -89,9 +105,7 @@ class ScheduleController {
    * @param {Response} ctx.response
    * @param {View} ctx.view
    */
-  async show({
-    params, request, response, view
-  }) {
+  async show({ params, request, response, view }) {
     const { id } = params
 
     const schedules = await Schedule.query()

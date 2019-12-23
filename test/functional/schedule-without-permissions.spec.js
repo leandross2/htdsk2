@@ -2,6 +2,10 @@
 
 const { test, trait } = use('Test/Suite')('SCHEDULE - usuario sem permissão')
 const Factory = use('Factory')
+const Schedule = use('App/Models/Schedule')
+const Permission = use('Permission')
+
+const { startOfTomorrow, subHours } = require('date-fns')
 
 trait('Test/ApiClient')
 trait('Auth/Client')
@@ -20,7 +24,6 @@ test('Não deve ser possivel um usuário sem permissão de "create_schedules" fa
 
   const users = await Factory.model('App/Models/User').createMany(2)
 
-
   const response = await client
     .post('/schedules')
     .loginVia(users[0])
@@ -35,7 +38,6 @@ test('Não deve ser possivel um usuário sem permissão de "create_schedules" fa
 })
 
 test('Não deve ser possivel um usuário sem permissão de "create_for_others_schedules" fazer checkin/agendamento para outro usuario', async ({
-
   client,
 }) => {
   const [desk] = await Factory.model('App/Models/Desk').createMany(1, [
@@ -47,7 +49,6 @@ test('Não deve ser possivel um usuário sem permissão de "create_for_others_sc
   ])
 
   const users = await Factory.model('App/Models/User').createMany(2)
-
 
   const response = await client
     .post('/schedules')
@@ -63,7 +64,6 @@ test('Não deve ser possivel um usuário sem permissão de "create_for_others_sc
 })
 
 test('Não deve ser possivel um usuário sem permissão de "create_for_others_schedules" e "create_schedules" fazer checkin/agendamento para outro usuario', async ({
-
   client,
 }) => {
   const [desk] = await Factory.model('App/Models/Desk').createMany(1, [
@@ -75,7 +75,6 @@ test('Não deve ser possivel um usuário sem permissão de "create_for_others_sc
   ])
 
   const users = await Factory.model('App/Models/User').createMany(2)
-
 
   const response = await client
     .post('/schedules')
@@ -89,4 +88,3 @@ test('Não deve ser possivel um usuário sem permissão de "create_for_others_sc
 
   response.assertStatus(403)
 })
-test('Não deve ser possivel fazer um agendamento com mais de 9 horas de antecedencia do dia seguinte')
