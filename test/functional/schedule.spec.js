@@ -3,9 +3,13 @@
 const { test, trait } = use('Test/Suite')('SCHEDULE - usuario com permissão')
 const Permission = use('Permission')
 const Factory = use('Factory')
-const Schedule = use('App/Models/Schedule')
 
-const { startOfYesterday, startOfTomorrow, subHours } = require('date-fns')
+const {
+  startOfYesterday,
+  startOfTomorrow,
+  subHours,
+  isBefore,
+} = require('date-fns')
 
 trait('Test/ApiClient')
 trait('Auth/Client')
@@ -43,21 +47,15 @@ test('Deve ser possivel fazer um agendamento a qualquer momento para o dia de de
     },
   ])
 
-  const user = await Factory.model('App/Models/User').create()
-
-  const permission = await Permission.query()
-    .where('slug', 'create_schedules')
-    .first()
-
-  await user.permissions().attach(permission.id)
+  const user = await createUserWithPermission('create_schedules')
 
   const response = await client
     .post('/schedules')
     .loginVia(user)
     .send({
-      dateSchedule: new Date(),
-      userId: user.id,
-      deskId: desk.id,
+      date_schedule: new Date(),
+      user_id: user.id,
+      desk_id: desk.id,
     })
     .end()
 
@@ -95,19 +93,48 @@ test('deve ser possivel um usuário com permissão de "create_for_others_schedul
     .post('/schedules')
     .loginVia(users[0])
     .send({
-      dateSchedule: new Date(),
-      userId: users[1].id,
-      deskId: desk.id,
+      date_schedule: new Date(),
+      user_id: users[1].id,
+      desk_id: desk.id,
     })
     .end()
-
   response.assertStatus(201)
   assert.exists(response.body.id)
 })
 
-test(
-  'deve ser possivel fazer um agendamento com até 9 horas de antecedencia do dia seguinte'
-)
+test('deve ser possivel fazer um agendamento com até 9 horas de antecedencia do dia seguinte', async ({
+  assert,
+  client,
+}) => {
+  const [desk] = await Factory.model('App/Models/Desk').createMany(1, [
+    {
+      description: 'A1',
+      position: 'ali',
+      locale_id: 1,
+    },
+  ])
+
+  const user = await createUserWithPermission('create_schedules')
+
+  const response = await client
+    .post('/schedules')
+    .loginVia(user)
+    .send({
+      date_schedule: new Date(),
+      user_id: user.id,
+      desk_id: desk.id,
+    })
+    .end()
+
+  const subTomorrow = subHours(startOfTomorrow(), 9)
+
+  if (isBefore(subTomorrow, new Date())) {
+    response.assertStatus(201)
+    assert.exists(response.body.id)
+  } else {
+    response.assertStatus(400)
+  }
+})
 
 test('Não deve poder fazer checkin em uma mesa, sem fazer checkout da sua mesa atual', async ({
   assert,
@@ -126,19 +153,13 @@ test('Não deve poder fazer checkin em uma mesa, sem fazer checkout da sua mesa 
     },
   ])
 
-  const user = await Factory.model('App/Models/User').create()
-
-  const permission = await Permission.query()
-    .where('slug', 'create_schedules')
-    .first()
-
-  await user.permissions().attach(permission.id)
+  const user = await createUserWithPermission('create_schedules')
 
   await client
     .post('/schedules')
     .loginVia(user)
     .send({
-      dateSchedule: new Date(),
+      date_schedule: new Date(),
       user_id: user.id,
       desk_id: desk[0].id,
     })
@@ -147,43 +168,35 @@ test('Não deve poder fazer checkin em uma mesa, sem fazer checkout da sua mesa 
     .post('/schedules')
     .loginVia(user)
     .send({
-      dateSchedule: new Date(),
+      date_schedule: new Date(),
       user_id: user.id,
       desk_id: desk[1].id,
     })
     .end()
+
   response.assertStatus(400)
-  assert.equal(response.body[0].field, 'dateSchedule')
+  assert.equal(response.body[0].field, 'date_schedule')
 })
 
 test('Não deve poder fazer checkin em uma mesa que não existe', async ({
   client,
 }) => {
-  const user = await Factory.model('App/Models/User').create()
-
-  const permission = await Permission.query()
-    .where('slug', 'create_schedules')
-    .first()
-
-  await user.permissions().attach(permission.id)
+  const user = await createUserWithPermission('create_schedules')
 
   const response = await client
     .post('/schedules')
     .loginVia(user)
     .send({
-      dateSchedule: new Date(),
-      userId: user.id,
-      deskId: 123,
+      date_schedule: new Date(),
+      user_id: user.id,
+      desk_id: 123,
     })
     .end()
 
   response.assertStatus(400)
 })
 
-test('Não deve poder fazer checkin em uma data passada', async ({
-  assert,
-  client,
-}) => {
+test('Não deve poder fazer checkin em uma data passada', async ({ client }) => {
   const [desk] = await Factory.model('App/Models/Desk').createMany(1, [
     {
       description: 'A1',
@@ -192,13 +205,7 @@ test('Não deve poder fazer checkin em uma data passada', async ({
     },
   ])
 
-  const user = await Factory.model('App/Models/User').create()
-
-  const permission = await Permission.query()
-    .where('slug', 'create_schedules')
-    .first()
-
-  await user.permissions().attach(permission.id)
+  const user = await createUserWithPermission('create_schedules')
 
   const yesterday = startOfYesterday()
 
@@ -206,45 +213,11 @@ test('Não deve poder fazer checkin em uma data passada', async ({
     .post('/schedules')
     .loginVia(user)
     .send({
-      dateSchedule: yesterday,
-      userId: user.id,
-      deskId: desk.id,
-    })
-    .end()
-
-  assert.equal(response.status, 401)
-})
-
-test('Não deve ser possivel fazer um agendamento com mais de 9 horas de antecedencia do dia seguinte', async ({
-  assert,
-  client,
-}) => {
-  const user = await createUserWithPermission(
-    'create_schedules',
-    'create_users'
-  )
-
-  const [desk] = await Factory.model('App/Models/Desk').createMany(1, [
-    {
-      description: 'A1',
-      position: '20|20',
-      locale_id: 1,
-    },
-  ])
-
-  const schedule = await Schedule.create({
-    date_schedule: startOfTomorrow(),
-    user_id: user.id,
-    desk_id: desk.id,
-  })
-  console.log(user.id)
-  const response = await client
-    .post('/schedules')
-    .loginVia(user)
-    .send({
-      date_schedule: subHours(startOfTomorrow(), 10),
+      date_schedule: yesterday,
       user_id: user.id,
       desk_id: desk.id,
     })
-  console.log(response)
+    .end()
+
+  response.assertStatus(400)
 })

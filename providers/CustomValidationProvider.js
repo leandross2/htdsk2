@@ -8,6 +8,7 @@ const {
   subHours,
   startOfTomorrow,
   startOfToday,
+  isToday,
 } = require('date-fns')
 
 class CustomValidationProvider extends ServiceProvider {
@@ -96,18 +97,16 @@ class CustomValidationProvider extends ServiceProvider {
     }
   }
 
-  async isAvailableScheduleTomorrowFn(data, field, message, args, get) {
+  async isAvailableScheduleFn(data, field, message, args, get) {
     const value = get(data, field)
 
     if (!value) {
       return
     }
-
-    const tomorrowDate = startOfTomorrow()
-    const availableHour = subHours(tomorrowDate, 9)
-    const validDate = isBefore(new Date(), availableHour)
-
-    if (validDate) {
+    const parsedDate = parseISO(value)
+    const tomorrowSub = subHours(startOfTomorrow(), 9)
+    const validhour = isBefore(tomorrowSub, new Date())
+    if (!validhour && !isToday(parsedDate)) {
       throw message
     }
   }
@@ -139,8 +138,8 @@ class CustomValidationProvider extends ServiceProvider {
     Validator.extend('isPastDate', this.pastDateFn.bind(this))
     Validator.extend('isAvailableDesk', this.isAvailableDeskFn.bind(this))
     Validator.extend(
-      'isAvailableScheduleTomorrow',
-      this.isAvailableScheduleTomorrowFn.bind(this)
+      'isAvailableSchedule',
+      this.isAvailableScheduleFn.bind(this)
     )
     Validator.extend('isChecked', this.isCheckedFn.bind(this))
   }

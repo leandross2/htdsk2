@@ -9,7 +9,8 @@ class ScheduleStore {
   get rules() {
     // validar o ID do params se existe
     return {
-      date_schedule: 'required|date|isChecked|isPastDate|isAvailableDesk',
+      date_schedule:
+        'required|date|isChecked|isPastDate|isAvailableDesk|isAvailableSchedule',
       user_id: 'required|exists:users,id',
       desk_id: 'required|exists:desks,id',
     }

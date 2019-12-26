@@ -4,17 +4,10 @@
 /** @typedef {import('@adonisjs/framework/src/Response')} Response */
 /** @typedef {import('@adonisjs/framework/src/View')} View */
 
-const {
-  startOfDay,
-  endOfDay,
-  parseISO,
-  startOfToday,
-  isBefore,
-  startOfTomorrow,
-  subHours,
-} = require('date-fns')
+const { startOfDay, endOfDay, parseISO } = require('date-fns')
 // const { utcToZonedTime } = require('date-fns-tz')
 
+/** @type {typeof import('@adonisjs/lucid/src/Lucid/Model')} */
 const Schedule = use('App/Models/Schedule')
 
 class ScheduleController {
@@ -23,6 +16,7 @@ class ScheduleController {
     if (!date || parseISO(date) == 'Invalid Date') {
       return response.status(400).send({ error: { message: 'data invalida' } })
     }
+
     const parsedDate = parseISO(date)
 
     const schedules = await Schedule.query()
@@ -37,29 +31,21 @@ class ScheduleController {
 
   async store({ request, response, auth }) {
     const { date_schedule, user_id, desk_id } = request.all()
-    console.log(date_schedule, user_id, desk_id)
     const startDaySchedule = startOfDay(parseISO(date_schedule))
 
-    const tomorrowSub = subHours(startOfTomorrow(), 9)
-    const validhour = isBefore(tomorrowSub, new Date())
-
-    if (!validhour) {
-      return response.status(401).send({
-        error: { message: 'Agendamento ainda não foi liberado' },
-      })
-    }
     const { user: userLogged } = auth
 
     const permissions = await userLogged.getPermissions()
 
     if (
-      !permissions.includes('create_schedules')
-      && !permissions.includes('create_for_others_schedules')
+      !permissions.includes('create_schedules') &&
+      !permissions.includes('create_for_others_schedules')
     ) {
       return response
         .status(403)
         .send({ error: { message: 'Você não tem permissão' } })
     }
+
     const schedule = await Schedule.create({
       date_schedule: startDaySchedule,
       user_id,

@@ -10,13 +10,13 @@ module.exports = {
   */
 
   enable: true,
-  specUrl: '/swagger.json',
+  // specUrl: 'swagger.yaml',
 
   options: {
     swaggerDefinition: {
       info: {
         title: 'Adonis 💘 Swagger',
-        version: '1.0.0'
+        version: '1.0.0',
       },
 
       basePath: '/',
@@ -25,7 +25,7 @@ module.exports = {
       securityDefinitions: {
         ApiKey: {
           description: 'ApiKey description',
-          name: 'Authorization'
+          name: 'Authorization',
         },
 
         // OAuth2 configuration
@@ -39,21 +39,21 @@ module.exports = {
             read: 'Grants read access (this is just sample)',
             write: 'Grants write access (this is just sample)',
             admin:
-              'Grants read and write access to administrative information (this is just sample)'
-          }
-        }
-      }
+              'Grants read and write access to administrative information (this is just sample)',
+          },
+        },
+      },
     },
 
     // Path to the API docs
     // Sample usage
     apis: [
       //    'docs/**/*.yml',    // load recursive all .yml file in docs directory
-      'docs/**/*.js' // load recursive all .js file in docs directory
-    ]
+      'docs/**/*.js', // load recursive all .js file in docs directory
+    ],
     // apis: [
     //   'app/**/*.js',
     //   'start/routes.js'
     // ]
-  }
+  },
 }

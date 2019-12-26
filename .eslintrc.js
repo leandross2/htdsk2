@@ -5,7 +5,7 @@ module.exports = {
     node: true,
   },
   extends: ['airbnb-base'],
-  plugins: ['prettier'],
+  // plugins: ['prettier'],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
@@ -15,7 +15,12 @@ module.exports = {
     ecmaVersion: 2018,
   },
   rules: {
-    'prettier/prettier': 'error',
+    // 'prettier/prettier': [
+    //   'error',
+    //   {
+    //     endOfLine: 'auto',
+    //   },
+    // ],
     semi: 'off',
     strict: 'off',
     camelcase: 'off',
@@ -24,5 +29,6 @@ module.exports = {
     'arrow-parens': 'off',
     'implicit-arrow-linebreak': 'off',
     'function-paren-newline': 'off',
+    'linebreak-style': 'off',
   },
 }
