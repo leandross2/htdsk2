@@ -1,6 +1,0 @@
-stages:
-  - test
-
-testes:
-  stage: test
-  script: yarn && adonis test

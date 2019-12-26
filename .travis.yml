@@ -1,0 +1,10 @@
+language: node_js
+node_js: 10
+notifications:
+  email:
+    recipients:
+      - EMAILLS
+    on_success: never # default: change
+    on_failure: always # default: always
+
+repo_token: OTCuTnMV7pR5Ppxmfsp3yRczO0XV1kaNj
