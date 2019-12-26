@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
-    "test": "NODE_ENV=test node ace test",
+    "test": "NODE_ENV=testing node ace test",
     "test:watch": "nodemon ace test"
   },
   "keywords": [
