@@ -43,7 +43,7 @@ class ScheduleController {
     ) {
       return response
         .status(403)
-        .send({ error: { message: 'Você não tem permissão' } })
+        .send({ error: { message: 'Você não tem permissão ' } })
     }
 
     const schedule = await Schedule.create({
