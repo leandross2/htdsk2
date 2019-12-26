@@ -10,7 +10,7 @@ class UserController {
       'password',
       'department_id',
       'permissions',
-      'roles'
+      'roles',
     ])
 
     const user = await User.create(data)
@@ -40,7 +40,7 @@ class UserController {
       name,
       email,
       password,
-      department_id
+      department_id,
     } = request.all()
 
     const user = await User.findOrFail(id)
@@ -60,7 +60,7 @@ class UserController {
       name,
       email,
       password,
-      department_id
+      department_id,
     })
 
     await user.save()
@@ -83,8 +83,8 @@ class UserController {
       return response.status(403).send({
         error: {
           message: 'Você não tem permissao para ver este usuario',
-          name: 'ForbiddenException'
-        }
+          name: 'ForbiddenException',
+        },
       })
     }
 

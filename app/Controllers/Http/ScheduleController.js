@@ -16,19 +16,8 @@ const {
 // const { utcToZonedTime } = require('date-fns-tz')
 
 const Schedule = use('App/Models/Schedule')
-/**
- * Resourceful controller for interacting with schedules
- */
+
 class ScheduleController {
-  /**
-   * Show a list of all schedules.
-   * GET schedules
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
   async index({ request, response }) {
     const { date } = request.get()
     if (!date || parseISO(date) == 'Invalid Date') {
@@ -46,25 +35,10 @@ class ScheduleController {
     return schedules
   }
 
-  /**
-   * Create/save a new schedule.
-   * POST schedules
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
   async store({ request, response, auth }) {
-    const { dateSchedule, user_id, desk_id } = request.all()
-    const startDaySchedule = startOfDay(parseISO(dateSchedule))
-
-    const invalidDate = isBefore(startDaySchedule, startOfToday())
-
-    if (invalidDate) {
-      return response
-        .status(401)
-        .send({ error: { message: 'Esta data já passou' } })
-    }
+    const { date_schedule, user_id, desk_id } = request.all()
+    console.log(date_schedule, user_id, desk_id)
+    const startDaySchedule = startOfDay(parseISO(date_schedule))
 
     const tomorrowSub = subHours(startOfTomorrow(), 9)
     const validhour = isBefore(tomorrowSub, new Date())
@@ -79,14 +53,13 @@ class ScheduleController {
     const permissions = await userLogged.getPermissions()
 
     if (
-      !permissions.includes('create_schedules') &&
-      !permissions.includes('create_for_others_schedules')
+      !permissions.includes('create_schedules')
+      && !permissions.includes('create_for_others_schedules')
     ) {
       return response
         .status(403)
         .send({ error: { message: 'Você não tem permissão' } })
     }
-    // console.log(utcToZonedTime(startDaySchedule, 'America/Bahia'))
     const schedule = await Schedule.create({
       date_schedule: startDaySchedule,
       user_id,
@@ -96,16 +69,7 @@ class ScheduleController {
     return response.status(201).send(schedule)
   }
 
-  /**
-   * Display a single schedule.
-   * GET schedules/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   * @param {View} ctx.view
-   */
-  async show({ params, request, response, view }) {
+  async show({ params }) {
     const { id } = params
 
     const schedules = await Schedule.query()
@@ -117,14 +81,6 @@ class ScheduleController {
     return schedules
   }
 
-  /**
-   * Update schedule details.
-   * PUT or PATCH schedules/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
   async update({ params, request }) {
     const {
       dateSchedule: date_schedule,
@@ -147,15 +103,7 @@ class ScheduleController {
     return schedule
   }
 
-  /**
-   * Delete a schedule with id.
-   * DELETE schedules/:id
-   *
-   * @param {object} ctx
-   * @param {Request} ctx.request
-   * @param {Response} ctx.response
-   */
-  async destroy({ response, auth }) {
+  async destroy({ auth }) {
     const { user } = auth
 
     const schedule = await Schedule.findByOrFail('user_id', user.id)

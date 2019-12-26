@@ -11,7 +11,7 @@ class PermissionController {
     return permission
   }
 
-  async index({ request }) {
+  async index() {
     const permissions = await Permission.all()
 
     return permissions

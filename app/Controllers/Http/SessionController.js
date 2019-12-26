@@ -30,8 +30,8 @@ class SessionController {
         email: user.email,
         token: token.token,
         type: roles,
-        admin: roles.includes('administrator')
-      }
+        admin: roles.includes('administrator'),
+      },
     }
   }
 }

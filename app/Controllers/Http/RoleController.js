@@ -24,7 +24,7 @@ class RoleController {
       'name',
       'slug',
       'description',
-      'permissions'
+      'permissions',
     ])
     const role = await Role.create(data)
 
@@ -41,7 +41,7 @@ class RoleController {
       'name',
       'slug',
       'description',
-      'permissions'
+      'permissions',
     ])
 
     const role = await Role.findOrFail(params.id)

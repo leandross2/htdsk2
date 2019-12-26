@@ -1,5 +1,6 @@
 'use strict'
 
+const path = require('path')
 /*
 |--------------------------------------------------------------------------
 | Providers
@@ -22,7 +23,9 @@ const providers = [
   'adonis-swagger/providers/SwaggerProvider',
   'adonis-acl/providers/AclProvider',
   'adonis-scheduler/providers/SchedulerProvider',
-  '@adonisjs/mail/providers/MailProvider'
+  '@adonisjs/mail/providers/MailProvider',
+  '@adonisjs/antl/providers/AntlProvider',
+  path.join(__dirname, '..', 'providers', 'CustomValidationProvider'),
 ]
 
 /*
@@ -38,7 +41,7 @@ const aceProviders = [
   '@adonisjs/lucid/providers/MigrationsProvider',
   'adonis-acl/providers/CommandsProvider',
   'adonis-scheduler/providers/CommandsProvider',
-  '@adonisjs/vow/providers/VowProvider'
+  '@adonisjs/vow/providers/VowProvider',
 ]
 
 /*
@@ -56,7 +59,7 @@ const aceProviders = [
 const aliases = {
   Role: 'Adonis/Acl/Role',
   Permission: 'Adonis/Acl/Permission',
-  Scheduler: 'Adonis/Addons/Scheduler'
+  Scheduler: 'Adonis/Addons/Scheduler',
 }
 
 /*
@@ -69,4 +72,9 @@ const aliases = {
 */
 const commands = []
 
-module.exports = { providers, aceProviders, aliases, commands }
+module.exports = {
+  providers,
+  aceProviders,
+  aliases,
+  commands,
+}

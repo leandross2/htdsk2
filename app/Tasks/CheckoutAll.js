@@ -12,8 +12,7 @@ class CheckoutAll extends Task {
   }
 
   async handle() {
-    const schedule = await Schedule
-      .query()
+    const schedule = await Schedule.query()
       .whereBetween('date_schedule', [startOfYesterday(), endOfYesterday()])
       .whereNull('date_checkout')
       .update({ date_checkout: new Date() })

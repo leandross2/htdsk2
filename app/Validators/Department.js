@@ -1,11 +1,16 @@
 'use strict'
 
+const Antl = use('Antl')
 class Department {
   get rules() {
     return {
       // validation rules
-      name: 'required'
+      name: 'required',
     }
+  }
+
+  get messages() {
+    return Antl.list('validation')
   }
 }
 

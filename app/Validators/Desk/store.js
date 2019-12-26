@@ -1,5 +1,7 @@
 'use strict'
 
+const Antl = use('Antl')
+
 class DeskStore {
   get validateAll() {
     return true
@@ -9,8 +11,12 @@ class DeskStore {
     return {
       // validation rules
       description: 'required',
-      position: 'required'
+      position: 'required',
     }
+  }
+
+  get messages() {
+    return Antl.list('validation')
   }
 }
 

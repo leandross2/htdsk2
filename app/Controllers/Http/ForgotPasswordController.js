@@ -23,9 +23,9 @@ class ForgotPasswordController {
         {
           email,
           token: user.token,
-          link: `${request.input('redirect_url')}?token=${user.token}`
+          link: `${request.input('redirect_url')}?token=${user.token}`,
         },
-        (message) => {
+        message => {
           message
             .to(user.email)
             .from('no-reply@cadatra.com')
@@ -62,7 +62,6 @@ class ForgotPasswordController {
       await user.save()
       return response.status(200)
     } catch (err) {
-      console.log(user, err)
       return response.status(401).send({ error: { message: 'Token inválido' } })
     }
   }

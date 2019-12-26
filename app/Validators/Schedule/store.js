@@ -1,5 +1,6 @@
 'use strict'
 
+const Antl = use('Antl')
 class ScheduleStore {
   get validateAll() {
     return true
@@ -8,10 +9,14 @@ class ScheduleStore {
   get rules() {
     // validar o ID do params se existe
     return {
-      dateSchedule: 'required|date|isChecked',
-      userId: 'required|exists:users,id',
-      deskId: 'required|exists:desks,id',
+      date_schedule: 'required|date|isChecked|isPastDate|isAvailableDesk',
+      user_id: 'required|exists:users,id',
+      desk_id: 'required|exists:desks,id',
     }
+  }
+
+  get messages() {
+    return Antl.list('validation')
   }
 }
 

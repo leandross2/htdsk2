@@ -5,7 +5,7 @@ const { startOfDay, endOfDay, parseISO } = require('date-fns')
 const Schedule = use('App/Models/Schedule')
 
 class CheckoutController {
-  async index({ request, query }) {
+  async index({ request }) {
     const { date } = request.get()
 
     const parsedDate = parseISO(date)
@@ -13,7 +13,7 @@ class CheckoutController {
     const schedules = await Schedule.query()
       .whereBetween('date_schedule', [
         startOfDay(parsedDate),
-        endOfDay(parsedDate)
+        endOfDay(parsedDate),
       ])
       .whereNotNull('date_checkout')
       .fetch()
@@ -21,9 +21,8 @@ class CheckoutController {
     return schedules
   }
 
-  async update({ request, params }) {
+  async update({ params }) {
     const schedule = await Schedule.findOrFail(params.id)
-    console.log(schedule)
     schedule.date_checkout = new Date()
 
     await schedule.save()
