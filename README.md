@@ -1,5 +1,5 @@
 # HOTDESK
-
+[![Build Status](https://travis-ci.com/leandross2/htdsk2.svg?branch=master)](https://travis-ci.com/leandross2/htdsk2)
 ## API
 
 O projeto foi feito utilizando

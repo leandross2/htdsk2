@@ -126,8 +126,7 @@ test('deve ser possivel fazer um agendamento a partir das 15h do dia anterior', 
     .end()
 
   const subTomorrow = subHours(startOfTomorrow(), 9)
-// console.log(isBefore(subTomorrow, new Date()))
-console.log(isBefore(subTomorrow, new Date()))
+
   if (isBefore(subTomorrow, new Date())) {
     response.assertStatus(201)
     assert.exists(response.body.id)
