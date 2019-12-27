@@ -10,9 +10,9 @@
   },
   "scripts": {
     "start": "node server.js",
-    "test": "node ace test",
+    "test": "node ace test | coveralls",
     "test:watch": "nodemon ace test",
-    "test:cover": "nodemon ace test | coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "keywords": [
     "adonisjs",
@@ -42,6 +42,7 @@
     "date-fns": "^2.8.1",
     "date-fns-tz": "^1.0.8",
     "nodemon": "^2.0.2",
+    "nyc": "^15.0.0",
     "pg": "^7.14.0"
   },
   "devDependencies": {
