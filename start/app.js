@@ -20,11 +20,12 @@ const providers = [
   '@adonisjs/mail/providers/MailProvider',
   '@adonisjs/framework/providers/ViewProvider',
   '@adonisjs/validator/providers/ValidatorProvider',
-  'adonis-swagger/providers/SwaggerProvider',
+  // 'adonis-swagger/providers/SwaggerProvider',
   'adonis-acl/providers/AclProvider',
   'adonis-scheduler/providers/SchedulerProvider',
   '@adonisjs/mail/providers/MailProvider',
   '@adonisjs/antl/providers/AntlProvider',
+  'adonis-swagger-jsdoc/providers/SwaggerjsdocProvider',
   path.join(__dirname, '..', 'providers', 'CustomValidationProvider'),
 ]
 
@@ -60,6 +61,7 @@ const aliases = {
   Role: 'Adonis/Acl/Role',
   Permission: 'Adonis/Acl/Permission',
   Scheduler: 'Adonis/Addons/Scheduler',
+  Swagger: 'Dent/Custom/SwaggerjsdocProvider',
 }
 
 /*

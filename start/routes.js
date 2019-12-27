@@ -4,18 +4,11 @@
 
 const Route = use('Route')
 
-Route.get('/', () => ({ sucesso: true }))
 /**
- * @swagger
- * /greeting:
- *   get:
- *     summary: 인사하기
- *     responses:
- *       200:
- *         description: 인사말
- *         schema:
- *           type: string
+ * rota sucesso
+ * @api {get} /user/:id
  */
+Route.get('/', () => ({ sucesso: true }))
 
 Route.post('session', 'SessionController.store')
 
@@ -23,6 +16,7 @@ Route.post('session', 'SessionController.store')
 Route.post('forgotpassword', 'ForgotPasswordController.store').validator(
   'ForgotPassword/store'
 )
+
 Route.put('forgotpassword', 'ForgotPasswordController.update').validator(
   'ForgotPassword/update'
 )

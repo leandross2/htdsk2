@@ -97,20 +97,28 @@ class CustomValidationProvider extends ServiceProvider {
     }
   }
 
+  /**
+   * Valida se o agendamento já está liberado
+   */
   async isAvailableScheduleFn(data, field, message, args, get) {
     const value = get(data, field)
 
     if (!value) {
       return
     }
+    
     const parsedDate = parseISO(value)
     const tomorrowSub = subHours(startOfTomorrow(), 9)
     const validhour = isBefore(tomorrowSub, new Date())
+    // console.log(validhour)
     if (!validhour && !isToday(parsedDate)) {
       throw message
     }
   }
 
+  /**
+   * Valida se a pessoa já está sentada em alguma mesa
+   */
   async isCheckedFn(data, field, message, args, get) {
     const Database = use('Database')
 

@@ -34,7 +34,6 @@ async function createUserWithPermission(...setPermissions) {
 
   return user
 }
-
 test('Deve ser possivel fazer um agendamento a qualquer momento para o dia de de hoje ', async ({
   assert,
   client,
@@ -102,7 +101,7 @@ test('deve ser possivel um usuário com permissão de "create_for_others_schedul
   assert.exists(response.body.id)
 })
 
-test('deve ser possivel fazer um agendamento com até 9 horas de antecedencia do dia seguinte', async ({
+test('deve ser possivel fazer um agendamento a partir das 15h do dia anterior', async ({
   assert,
   client,
 }) => {
@@ -127,7 +126,8 @@ test('deve ser possivel fazer um agendamento com até 9 horas de antecedencia do
     .end()
 
   const subTomorrow = subHours(startOfTomorrow(), 9)
-
+// console.log(isBefore(subTomorrow, new Date()))
+console.log(isBefore(subTomorrow, new Date()))
   if (isBefore(subTomorrow, new Date())) {
     response.assertStatus(201)
     assert.exists(response.body.id)

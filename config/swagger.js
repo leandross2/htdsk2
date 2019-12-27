@@ -10,7 +10,7 @@ module.exports = {
   */
 
   enable: true,
-  // specUrl: 'swagger.yaml',
+  specUrl: 'swagger.yaml',
 
   options: {
     swaggerDefinition: {

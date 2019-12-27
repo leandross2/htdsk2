@@ -3,6 +3,25 @@
 const User = use('App/Models/User')
 
 class UserController {
+  /**
+   * @swagger
+   * /api/hello:
+   *   get:
+   *     tags:
+   *       - Test
+   *     summary: Sample API
+   *     parameters:
+   *       - name: name
+   *         description: Name of the user
+   *         in: query
+   *         required: false
+   *         type: string
+   *     responses:
+   *       200:
+   *         description: Send hello message
+   *         example:
+   *           message: Hello Guess
+   */
   async store({ request, response }) {
     const { permissions, roles, ...data } = request.only([
       'name',
@@ -76,9 +95,9 @@ class UserController {
     const havePermisssion = await userLogged.getPermissions()
 
     if (
-      !isAdmin.includes('administrator')
-      && !havePermisssion.includes('read_one_users')
-      && userLogged.id !== Number(params.id)
+      !isAdmin.includes('administrator') &&
+      !havePermisssion.includes('read_one_users') &&
+      userLogged.id !== Number(params.id)
     ) {
       return response.status(403).send({
         error: {
