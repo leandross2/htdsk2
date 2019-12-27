@@ -8,5 +8,5 @@ stages: test
 jobs:
   include:
     - stage: test
-      script: npm i -g @adonisjs/cli
+      before_script: npm i -g @adonisjs/cli
       script: adonis test 
