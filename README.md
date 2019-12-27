@@ -1,5 +1,6 @@
 # HOTDESK
 [![Build Status](https://travis-ci.com/leandross2/htdsk2.svg?branch=master)](https://travis-ci.com/leandross2/htdsk2)
+[![Coverage Status](https://coveralls.io/repos/github/leandross2/htdsk2/badge.svg)](https://coveralls.io/github/leandross2/htdsk2)
 ## API
 
 O projeto foi feito utilizando

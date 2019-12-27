@@ -3,10 +3,8 @@ node_js: 12
 env:
   global:
     - NODE_ENV=testing
-stages: test
 
-jobs:
-  include:
-    - stage: test
-      before_script: npm i -g @adonisjs/cli
-      script: touch .env && adonis test
+before_script: npm i -g @adonisjs/cli
+script: touch .env && adonis test
+after_success:
+    - yarn coveralls
