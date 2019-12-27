@@ -9,5 +9,5 @@ jobs:
   include:
     - stage: test
       before_script: npm i -g @adonisjs/cli
-      script: touch .env 
-      script: adonis test 
+      script: touch .env
+      script: adonis test
