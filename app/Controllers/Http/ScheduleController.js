@@ -13,9 +13,6 @@ const Schedule = use('App/Models/Schedule')
 class ScheduleController {
   async index({ request, response }) {
     const { date } = request.get()
-    if (!date || parseISO(date) == 'Invalid Date') {
-      return response.status(400).send({ error: { message: 'data invalida' } })
-    }
 
     const parsedDate = parseISO(date)
 
@@ -31,7 +28,9 @@ class ScheduleController {
 
   async store({ request, response, auth }) {
     const { date_schedule, user_id, desk_id } = request.all()
+  
     const startDaySchedule = startOfDay(parseISO(date_schedule))
+
 
     const { user: userLogged } = auth
 
