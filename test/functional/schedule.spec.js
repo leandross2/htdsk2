@@ -119,7 +119,7 @@ test('deve ser possivel fazer um agendamento a partir das 15h do dia anterior', 
     .post('/schedules')
     .loginVia(user)
     .send({
-      date_schedule: new Date(),
+      date_schedule: startOfTomorrow(),
       user_id: user.id,
       desk_id: desk.id,
     })
@@ -127,7 +127,7 @@ test('deve ser possivel fazer um agendamento a partir das 15h do dia anterior', 
 
   const subTomorrow = subHours(startOfTomorrow(), 9)
 
-  if (isBefore(subTomorrow, new Date())) {
+  if (isBefore(subTomorrow, subTomorrow)) {
     response.assertStatus(201)
     assert.exists(response.body.id)
   } else {
