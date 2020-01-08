@@ -109,7 +109,8 @@ class CustomValidationProvider extends ServiceProvider {
     
     const parsedDate = parseISO(value)
     const tomorrowSub = subHours(startOfTomorrow(), 9)
-    const validhour = isBefore(tomorrowSub, new Date())
+    const validhour = isBefore(new Date(), tomorrowSub)
+
     if (!validhour || !isToday(parsedDate)) {
       throw message
     }

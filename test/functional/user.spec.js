@@ -12,7 +12,7 @@ trait('Auth/Client')
 
 test('Usuário com a permissao de "create_users", podera cadastrar um novo usuario', async ({
   assert,
-  client
+  client,
 }) => {
   const user = await Factory.model('App/Models/User').create()
 
@@ -29,7 +29,7 @@ test('Usuário com a permissao de "create_users", podera cadastrar um novo usuar
       name: 'novo usuario',
       email: 'newuser@cadastra.com',
       password: '123',
-      password_confirmation: '123'
+      password_confirmation: '123',
     })
     .end()
 
@@ -38,8 +38,7 @@ test('Usuário com a permissao de "create_users", podera cadastrar um novo usuar
 })
 
 test('Usuário com a permissao de "read_users", poderá listar todos os usuarios', async ({
-  assert,
-  client
+  client,
 }) => {
   const user = await Factory.model('App/Models/User').create()
 
@@ -59,7 +58,7 @@ test('Usuário com a permissao de "read_users", poderá listar todos os usuarios
 
 test('Usuário com a permissao de "read_one_user", poderá listar detalhes de outros usuarios', async ({
   assert,
-  client
+  client,
 }) => {
   const users = await Factory.model('App/Models/User').createMany(2)
 
@@ -77,3 +76,5 @@ test('Usuário com a permissao de "read_one_user", poderá listar detalhes de ou
   response.assertStatus(200)
   assert.exists(response.body.id)
 })
+
+test('')

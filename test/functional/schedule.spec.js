@@ -35,9 +35,7 @@ async function createUserWithPermission(...setPermissions) {
   return user
 }
 
-test('group', async({runner})=>{
-  console.log(runner)
-})
+
   test('Deve ser possivel fazer um agendamento a qualquer momento para o dia de de hoje ', async ({
     assert,
     client,
@@ -62,7 +60,6 @@ test('group', async({runner})=>{
         desk_id: desk.id,
       })
       .end()
-
     response.assertStatus(201)
     assert.exists(response.body.id)
   })

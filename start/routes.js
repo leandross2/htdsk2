@@ -6,7 +6,7 @@ const Route = use('Route')
 
 /**
  * rota sucesso
- * @api {get} /user/:id
+ * @api {get} /
  */
 Route.get('/', () => ({ sucesso: true }))
 

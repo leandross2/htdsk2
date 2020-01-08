@@ -25,7 +25,7 @@ Factory.blueprint('Adonis/Acl/Role', async (faker, index, data) => ({
   description: data[index].description,
 }))
 
-Factory.blueprint('App/Models/User', async (faker, index, data) => ({
+Factory.blueprint('App/Models/User', async (faker, index, data = {}) => ({
   name: faker.name(),
   email: faker.email(),
   password: faker.password(),
@@ -35,6 +35,7 @@ Factory.blueprint('App/Models/User', async (faker, index, data) => ({
 Factory.blueprint('App/Models/Locale', async (faker, index, data) => ({
   description: data[index].description,
 }))
+
 Factory.blueprint('App/Models/Desk', async (faker, index, data) => ({
   description: data[index].description,
   position: data[index].position,
