@@ -265,7 +265,7 @@ test('INDEX: deve retornar todo os agendamentos de uma data especifica', async (
     'create_schedules',
     'read_schedules'
   )
-  const schedule = await Factory.model('App/Models/Schedule').create({
+  await Factory.model('App/Models/Schedule').create({
     date_schedule: new Date(),
     user_id: user.id,
     desk_id: desk.id,
@@ -275,6 +275,7 @@ test('INDEX: deve retornar todo os agendamentos de uma data especifica', async (
     user_id: user.id,
     desk_id: desk.id,
   })
+
   const response = await client
     .get(
       `/schedules?date=${new Date().getFullYear()}-${`0${new Date().getMonth() +

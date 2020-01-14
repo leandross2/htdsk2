@@ -30,5 +30,6 @@ module.exports = {
     'implicit-arrow-linebreak': 'off',
     'function-paren-newline': 'off',
     'linebreak-style': 'off',
+    'operator-linebreak': 'off',
   },
 }
