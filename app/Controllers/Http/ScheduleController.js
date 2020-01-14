@@ -11,7 +11,7 @@ const { startOfDay, endOfDay, parseISO } = require('date-fns')
 const Schedule = use('App/Models/Schedule')
 
 class ScheduleController {
-  async index({ request, response }) {
+  async index({ request }) {
     const { date } = request.get()
 
     const parsedDate = parseISO(date)
@@ -34,14 +34,17 @@ class ScheduleController {
     const { user: userLogged } = auth
 
     const permissions = await userLogged.getPermissions()
-
     if (
-      !permissions.includes('create_schedules') &&
+      userLogged.id !== user_id &&
       !permissions.includes('create_for_others_schedules')
     ) {
-      return response
-        .status(403)
-        .send({ error: { message: 'Você não tem permissão ' } })
+      return response.status(403).send({
+        error: {
+          message: 'Você não tem permissão',
+          name: 'ForbiddenException',
+          status: 403,
+        },
+      })
     }
 
     const schedule = await Schedule.create({
@@ -60,7 +63,7 @@ class ScheduleController {
       .where('id', id)
       .with('user')
       .with('desk')
-      .fetch()
+      .first()
 
     return schedules
   }
@@ -89,7 +92,7 @@ class ScheduleController {
 
   async destroy({ auth }) {
     const { user } = auth
-
+    console.log('@@@')
     const schedule = await Schedule.findByOrFail('user_id', user.id)
 
     schedule.date_checkout = new Date()

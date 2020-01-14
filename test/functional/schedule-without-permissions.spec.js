@@ -28,7 +28,32 @@ async function createUserWithPermission(...setPermissions) {
   return user
 }
 
-test('STORE: Não deve ser possivel um usuário sem permissão de "create_schedules" fazer checkin/agendamento para outro usuario', async ({
+test('STORE: Não deve ser possivel um usuário sem permissão de "create_schedules" fazer checkin/agendamento', async ({
+  client,
+}) => {
+  const [desk] = await Factory.model('App/Models/Desk').createMany(1, [
+    {
+      description: 'A1',
+      position: 'ali',
+      locale_id: 1,
+    },
+  ])
+
+  const user = await createUserWithPermission()
+
+  const response = await client
+    .post('/schedules')
+    .loginVia(user)
+    .send({
+      date_schedule: new Date(),
+      user_id: user.id,
+      desk_id: desk.id,
+    })
+    .end()
+  response.assertStatus(403)
+})
+
+test('STORE: Não deve ser possivel um usuário sem permissão de "create_for_others_schedules" fazer checkin/agendamento para outro usuario', async ({
   client,
 }) => {
   const [desk] = await Factory.model('App/Models/Desk').createMany(1, [
@@ -40,18 +65,25 @@ test('STORE: Não deve ser possivel um usuário sem permissão de "create_schedu
   ])
 
   const users = await Factory.model('App/Models/User').createMany(2)
+  const permissions = []
+
+  permissions[0] = await Permission.query()
+    .where('slug', 'create_schedules')
+    .first()
+
+  await users[0].permissions().attach(permissions[0].id)
 
   const response = await client
     .post('/schedules')
     .loginVia(users[0])
     .send({
-      dateSchedule: new Date(),
-      userId: users[1].id,
-      deskId: desk.id,
+      date_schedule: new Date(),
+      user_id: users[1].id,
+      desk_id: desk.id,
     })
     .end()
 
-  response.assertStatus(400)
+  response.assertStatus(403)
 })
 
 test('INDEX: Não deve ser possivel um usuário sem permissão de "read_schedules" deve retornar todo os agendamentos de uma data especifica', async ({

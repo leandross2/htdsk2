@@ -76,5 +76,3 @@ test('Usuário com a permissao de "read_one_user", poderá listar detalhes de ou
   response.assertStatus(200)
   assert.exists(response.body.id)
 })
-
-test('')

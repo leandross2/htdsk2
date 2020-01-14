@@ -286,3 +286,58 @@ test('INDEX: deve retornar todo os agendamentos de uma data especifica', async (
   assert.isArray(response.body)
   assert.lengthOf(response.body, 2)
 })
+
+test('SHOW: deve exibir um agendamento selecionado por ID', async ({
+  assert,
+  client,
+}) => {
+  const [desk] = await Factory.model('App/Models/Desk').createMany(1, [
+    {
+      description: 'A1',
+      position: 'ali',
+      locale_id: 1,
+    },
+  ])
+
+  const user = await createUserWithPermission('read_schedules')
+
+  const schedule = await Factory.model('App/Models/Schedule').create({
+    date_schedule: new Date(),
+    user_id: user.id,
+    desk_id: desk.id,
+  })
+
+  const response = await client
+    .get(`/schedules/${schedule.id}`)
+    .loginVia(user)
+    .end()
+
+  assert.exists(response.body.id)
+})
+test('DESTROY: deve fazer o checkout selecionando um agendamento por ID', async ({
+  assert,
+  client,
+}) => {
+  const [desk] = await Factory.model('App/Models/Desk').createMany(1, [
+    {
+      description: 'A1',
+      position: 'ali',
+      locale_id: 1,
+    },
+  ])
+
+  const user = await createUserWithPermission('delete_schedules')
+
+  const schedule = await Factory.model('App/Models/Schedule').create({
+    date_schedule: new Date(),
+    user_id: user.id,
+    desk_id: desk.id,
+  })
+
+  const response = await client
+    .delete(`/schedules/${schedule.id}`)
+    .loginVia(user)
+    .end()
+  console.log(response.body)
+  response.assertStatus(204)
+})

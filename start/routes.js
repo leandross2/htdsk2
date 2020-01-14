@@ -82,6 +82,9 @@ Route.group(() => {
   Route.post('schedules', 'ScheduleController.store')
     .validator('Schedule/store')
     .middleware('can:create_schedules')
+  Route.delete('schedules/:id', 'ScheduleController.destroy').middleware(
+    'can:delete_schedules'
+  )
 
   // checkouts
   Route.get('checkouts', 'CheckoutController.index').middleware(
