@@ -49,5 +49,6 @@
   "url": "{{field}} deve ser uma URL válida.",
   "isChecked": "Você deve fazer checkout antes de fazer checkin",
   "isAvailableDesk": "Mesa ocupada",
-  "pastDate": "Esta data já passou"
+  "pastDate": "Esta data já passou",
+  "isAvailableSchedule": "Agendamento para amanhã somente após as 15h"
 }

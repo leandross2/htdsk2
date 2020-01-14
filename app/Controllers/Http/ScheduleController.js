@@ -28,9 +28,8 @@ class ScheduleController {
 
   async store({ request, response, auth }) {
     const { date_schedule, user_id, desk_id } = request.all()
-  
-    const startDaySchedule = startOfDay(parseISO(date_schedule))
 
+    const startDaySchedule = startOfDay(parseISO(date_schedule))
 
     const { user: userLogged } = auth
 

@@ -41,3 +41,9 @@ Factory.blueprint('App/Models/Desk', async (faker, index, data) => ({
   position: data[index].position,
   locale_id: data[index].locale_id,
 }))
+
+Factory.blueprint('App/Models/Schedule', async (faker, index, data) => ({
+  date_schedule: data.date_schedule,
+  user_id: data.user_id,
+  desk_id: data.desk_id,
+}))

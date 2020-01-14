@@ -103,15 +103,16 @@ class CustomValidationProvider extends ServiceProvider {
   async isAvailableScheduleFn(data, field, message, args, get) {
     const value = get(data, field)
 
-    if (!value) {
+    const parsedDate = parseISO(value)
+
+    if (!value || isToday(parsedDate)) {
       return
     }
-    
-    const parsedDate = parseISO(value)
+    // console.log(parsedDate)
     const tomorrowSub = subHours(startOfTomorrow(), 9)
     const validhour = isBefore(new Date(), tomorrowSub)
 
-    if (!validhour || !isToday(parsedDate)) {
+    if (validhour) {
       throw message
     }
   }
