@@ -27,6 +27,15 @@ class CheckoutController {
 
     await schedule.save()
   }
+
+  async destroy({ auth }) {
+    const { user } = auth
+    const schedule = await Schedule.findByOrFail('user_id', user.id)
+
+    schedule.date_checkout = new Date()
+
+    await schedule.save()
+  }
 }
 
 module.exports = CheckoutController

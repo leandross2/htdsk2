@@ -338,6 +338,38 @@ test('DESTROY: deve fazer o checkout selecionando um agendamento por ID', async 
     .delete(`/schedules/${schedule.id}`)
     .loginVia(user)
     .end()
-  console.log(response.body)
+  response.assertStatus(204)
+})
+
+test('UPDATE: deve ser possivel alterar os dados de um agendamento', async ({
+  assert,
+  client,
+}) => {
+  const [desk] = await Factory.model('App/Models/Desk').createMany(1, [
+    {
+      description: 'A1',
+      position: 'ali',
+      locale_id: 1,
+    },
+  ])
+
+  const user = await createUserWithPermission('update_schedules')
+
+  const schedule = await Factory.model('App/Models/Schedule').create({
+    date_schedule: '2020-01-15',
+    user_id: user.id,
+    desk_id: desk.id,
+  })
+
+  const response = await client
+    .put(`/schedules/${schedule.id}`)
+    .loginVia(user)
+    .send({
+      date_schedule: '2020-01-16',
+      user_id: user.id,
+      desk_id: desk.id,
+    })
+    .end()
+
   response.assertStatus(204)
 })

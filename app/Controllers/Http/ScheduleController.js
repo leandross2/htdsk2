@@ -69,12 +69,7 @@ class ScheduleController {
   }
 
   async update({ params, request }) {
-    const {
-      dateSchedule: date_schedule,
-      dateCheckout: date_checkout,
-      userId: user_id,
-      deskId: desk_id,
-    } = request.all()
+    const { date_schedule, date_checkout, user_id, desk_id } = request.all()
 
     const schedule = await Schedule.find(params.id)
 
@@ -86,18 +81,11 @@ class ScheduleController {
     })
 
     await schedule.save()
-
-    return schedule
   }
 
-  async destroy({ auth }) {
-    const { user } = auth
-    console.log('@@@')
-    const schedule = await Schedule.findByOrFail('user_id', user.id)
-
-    schedule.date_checkout = new Date()
-
-    await schedule.save()
+  async destroy({ params }) {
+    const schedule = await Schedule.find(params.id)
+    await schedule.delete()
   }
 }
 
