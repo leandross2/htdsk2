@@ -12,7 +12,8 @@
     "start": "node server.js",
     "test": "node ace test | coveralls",
     "test:watch": "nodemon ace test",
-    "coverage": "nyc node ace test && nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc node ace test && nyc report --reporter=text-lcov | coveralls",
+    "doc": " apidoc -i start/ -o public"
   },
   "keywords": [
     "adonisjs",

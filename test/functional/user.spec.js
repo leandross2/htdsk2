@@ -54,8 +54,10 @@ test('STORE: Usuário com a papel "administrator", podera cadastrar um novo usua
       permissions: [1, 2, 3, 4],
     })
     .end()
+
   response.assertStatus(201)
   assert.equal(response.body.roles[0].id, 1)
+  assert.lengthOf(response.body.roles, 1)
   assert.equal(response.body.permissions[0].id, 1)
   assert.lengthOf(response.body.permissions, 4)
 })
