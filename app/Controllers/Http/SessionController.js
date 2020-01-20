@@ -8,7 +8,7 @@ class SessionController {
     const { email, password } = request.all()
 
     let expiresIn = null
-    if (email === 'mapa@cadastra.com') {
+    if (email === 'mapa@htdsk.com') {
       expiresIn = { expiresIn: '2h' }
     }
     const token = await auth.attempt(email, password, null, expiresIn)

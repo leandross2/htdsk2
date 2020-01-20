@@ -18,7 +18,7 @@ class UserSeeder {
   async run() {
     await Factory.model('App/Models/User').create({
       name: 'admin',
-      email: 'administrator@cadastra.com',
+      email: 'administrator@htdsk.com',
       password: '123'
     })
 
